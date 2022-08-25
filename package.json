@@ -11,9 +11,15 @@
     "lint:fix": "eslint **/*.js --fix"
   },
   "dependencies": {
+    "@react-navigation/native": "^6.0.12",
+    "@react-navigation/native-stack": "^6.8.0",
+    "native-base": "^3.4.13",
     "react": "18.0.0",
     "react-native": "0.69.4",
     "react-native-pin-view": "^3.0.2",
+    "react-native-safe-area-context": "^4.3.3",
+    "react-native-screens": "^3.17.0",
+    "react-native-svg": "12.1.1",
     "react-native-vector-icons": "^9.2.0"
   },
   "devDependencies": {

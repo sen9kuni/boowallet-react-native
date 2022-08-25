@@ -1,6 +1,11 @@
 import {StyleSheet, Dimensions} from 'react-native';
 
-import {PRIMARY_COLOR, WHITE_COLOR} from './constant';
+import {
+  PRIMARY_COLOR,
+  SECONDARY_BLACK,
+  SECONDARY_TRANS,
+  WHITE_COLOR,
+} from './constant';
 
 const style = StyleSheet.create({
   textLogo: {
@@ -18,6 +23,18 @@ const style = StyleSheet.create({
   },
   cPrimary: {
     color: PRIMARY_COLOR,
+  },
+  cCBlack: {
+    color: SECONDARY_BLACK,
+  },
+  cGreen: {
+    color: 'green',
+  },
+  cRed: {
+    color: 'red',
+  },
+  cSecondary: {
+    color: SECONDARY_TRANS,
   },
   fZ24: {
     fontSize: 24,
@@ -49,9 +66,15 @@ const style = StyleSheet.create({
   mB15: {
     marginBottom: 15,
   },
+  mT15: {
+    marginTop: 15,
+  },
   content: {
     flex: 1,
     paddingHorizontal: 10,
+  },
+  flx1: {
+    flex: 1,
   },
   infoAuth: {
     // height: 202,
