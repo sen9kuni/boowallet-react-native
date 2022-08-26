@@ -2,33 +2,17 @@ import {
   View,
   Text,
   StyleSheet,
-  Dimensions,
   TouchableOpacity,
   ScrollView,
-  Image,
-  TextInput,
-  Alert,
 } from 'react-native';
 import React, {useRef} from 'react';
-import {
-  BACK_PRIMARY,
-  PRIMARY_COLOR,
-  SECONDARY_COLOR,
-  SECONDARY_TRANS,
-  WHITE_COLOR,
-} from '../styles/constant';
+import {BACK_PRIMARY} from '../styles/constant';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from '../styles/global';
-import imageProfile from '../assets/profile/mainprofile.png';
-import Cardtransctions from '../components/Cardtransctions';
-import GraficImage from '../assets/images/graphicstat.png';
-import CardUsers from '../components/CardUsers';
 import CardUsersLong from '../components/CardUsersLong';
-import Input from '../components/Input';
 import InfoCard from '../components/InfoCard';
-import ReactPinView from 'react-native-pin-view';
 
-const DummyLab = () => {
+const TransactionFailed = () => {
   return (
     <ScrollView style={styleLocal.wrapper}>
       <View style={styleLocal.wrapperInfo}>
@@ -108,4 +92,4 @@ const styleLocal = StyleSheet.create({
   },
 });
 
-export default DummyLab;
+export default TransactionFailed;

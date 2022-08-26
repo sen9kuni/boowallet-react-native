@@ -7,7 +7,7 @@ import styles from '../styles/global';
 import ReactPinView from 'react-native-pin-view';
 import {PRIMARY_COLOR} from '../styles/constant';
 
-const CheckPin = () => {
+const CreatePin = () => {
   const pinView = useRef(null);
   const [enteredPin, setEnteredPin] = React.useState('');
   const [showRemoveButton, setShowRemoveButton] = React.useState(false);
@@ -94,4 +94,4 @@ const styleLocal = StyleSheet.create({
   },
 });
 
-export default CheckPin;
+export default CreatePin;

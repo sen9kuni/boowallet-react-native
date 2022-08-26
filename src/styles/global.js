@@ -36,8 +36,29 @@ const style = StyleSheet.create({
   cSecondary: {
     color: SECONDARY_TRANS,
   },
+  bgWhite: {
+    backgroundColor: WHITE_COLOR,
+  },
+  bgPrimary: {
+    backgroundColor: PRIMARY_COLOR,
+  },
+  bgCBlack: {
+    backgroundColor: SECONDARY_BLACK,
+  },
+  bgGreen: {
+    backgroundColor: 'green',
+  },
+  bgRed: {
+    backgroundColor: 'red',
+  },
+  bgSecondary: {
+    backgroundColor: SECONDARY_TRANS,
+  },
   fZ24: {
     fontSize: 24,
+  },
+  fZ42: {
+    fontSize: 42,
   },
   fZ26: {
     fontSize: 26,
@@ -60,6 +81,9 @@ const style = StyleSheet.create({
   fW700: {
     fontWeight: '700',
   },
+  mB40: {
+    marginBottom: 40,
+  },
   mB60: {
     marginBottom: 60,
   },
@@ -75,6 +99,9 @@ const style = StyleSheet.create({
   },
   flx1: {
     flex: 1,
+  },
+  tCenter: {
+    textAlign: 'center',
   },
   infoAuth: {
     // height: 202,
@@ -106,6 +133,15 @@ const style = StyleSheet.create({
     // width: (Dimensions.get('screen').width * 50) / 100,
     paddingVertical: 16,
     paddingHorizontal: 148,
+    alignItems: 'center',
+    borderRadius: 12,
+    // elevation: 3,
+  },
+  buttonSuccess: {
+    backgroundColor: PRIMARY_COLOR,
+    // width: (Dimensions.get('screen').width * 50) / 100,
+    paddingVertical: 16,
+    paddingHorizontal: 130,
     alignItems: 'center',
     borderRadius: 12,
     // elevation: 3,

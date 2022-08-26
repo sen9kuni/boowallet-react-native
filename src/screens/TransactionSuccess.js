@@ -2,46 +2,25 @@ import {
   View,
   Text,
   StyleSheet,
-  Dimensions,
   TouchableOpacity,
   ScrollView,
-  Image,
-  TextInput,
-  Alert,
 } from 'react-native';
 import React, {useRef} from 'react';
-import {
-  BACK_PRIMARY,
-  PRIMARY_COLOR,
-  SECONDARY_COLOR,
-  SECONDARY_TRANS,
-  WHITE_COLOR,
-} from '../styles/constant';
+import {BACK_PRIMARY, PRIMARY_COLOR} from '../styles/constant';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from '../styles/global';
-import imageProfile from '../assets/profile/mainprofile.png';
-import Cardtransctions from '../components/Cardtransctions';
-import GraficImage from '../assets/images/graphicstat.png';
-import CardUsers from '../components/CardUsers';
 import CardUsersLong from '../components/CardUsersLong';
-import Input from '../components/Input';
 import InfoCard from '../components/InfoCard';
-import ReactPinView from 'react-native-pin-view';
 
-const DummyLab = () => {
+const TransactionSuccess = () => {
   return (
     <ScrollView style={styleLocal.wrapper}>
       <View style={styleLocal.wrapperInfo}>
         <View style={[styleLocal.circleCheck, styles.mT15]}>
-          <Icon name="remove" size={40} color="white" />
+          <Icon name="check" size={40} color="white" />
         </View>
         <Text style={[styles.fZ24, styles.fW700, styles.cCBlack]}>
-          Transfer Failed
-        </Text>
-        <Text
-          style={[styles.fZ16, styles.fW400, styles.cCBlack, styles.tCenter]}>
-          We can't transfer your money at the moment, we recommend you to check
-          your internet connection and try again.
+          Transfer Success
         </Text>
       </View>
       <View style={styleLocal.infoSub}>
@@ -63,9 +42,9 @@ const DummyLab = () => {
       </View>
       <View style={[styles.buttonWrapper, styleLocal.marginTButton]}>
         <TouchableOpacity>
-          <View style={styles.button}>
+          <View style={styles.buttonSuccess}>
             <Text style={[styles.cWhite, styles.fZ18, styles.fW700]}>
-              Try Again
+              Back to Home
             </Text>
           </View>
         </TouchableOpacity>
@@ -82,13 +61,13 @@ const styleLocal = StyleSheet.create({
   circleCheck: {
     height: 70,
     width: 70,
-    backgroundColor: 'red',
+    backgroundColor: PRIMARY_COLOR,
     borderRadius: 50,
     justifyContent: 'center',
     alignItems: 'center',
   },
   wrapperInfo: {
-    height: 300,
+    height: 205,
     paddingVertical: 35,
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -108,4 +87,4 @@ const styleLocal = StyleSheet.create({
   },
 });
 
-export default DummyLab;
+export default TransactionSuccess;
