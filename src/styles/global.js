@@ -4,6 +4,7 @@ import {
   PRIMARY_COLOR,
   SECONDARY_BLACK,
   SECONDARY_TRANS,
+  THRID_TBLACK,
   WHITE_COLOR,
 } from './constant';
 
@@ -26,6 +27,9 @@ const style = StyleSheet.create({
   },
   cCBlack: {
     color: SECONDARY_BLACK,
+  },
+  ctBlack: {
+    color: THRID_TBLACK,
   },
   cGreen: {
     color: 'green',
@@ -81,6 +85,9 @@ const style = StyleSheet.create({
   fW700: {
     fontWeight: '700',
   },
+  mR15: {
+    marginRight: 15,
+  },
   mB40: {
     marginBottom: 40,
   },
@@ -92,6 +99,9 @@ const style = StyleSheet.create({
   },
   mT15: {
     marginTop: 15,
+  },
+  mV15: {
+    marginVertical: 15,
   },
   content: {
     flex: 1,
@@ -144,6 +154,16 @@ const style = StyleSheet.create({
     paddingHorizontal: 130,
     alignItems: 'center',
     borderRadius: 12,
+    // elevation: 3,
+  },
+  buttonPass: {
+    backgroundColor: PRIMARY_COLOR,
+    // width: (Dimensions.get('screen').width * 50) / 100,
+    paddingVertical: 16,
+    paddingHorizontal: 110,
+    alignItems: 'center',
+    borderRadius: 12,
+    marginTop: 250,
     // elevation: 3,
   },
 });

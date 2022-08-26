@@ -15,6 +15,9 @@ import SearchReciver from './src/screens/SearchReciver';
 import AmountInput from './src/screens/AmountInput';
 import TransferConfirmation from './src/screens/TransferConfirmation';
 import TransferPin from './src/screens/TransferPin';
+import TransactionSuccess from './src/screens/TransactionSuccess';
+import TransactionFailed from './src/screens/TransactionFailed';
+import EditPhone from './src/screens/EditPhone';
 
 const App = () => {
   return <DummyLab />;
