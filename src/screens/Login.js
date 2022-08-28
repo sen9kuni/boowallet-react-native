@@ -11,12 +11,13 @@ import React from 'react';
 import styles from '../styles/global';
 import Input from '../components/Input';
 
-const Login = () => {
+const Login = ({navigation}) => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const onLogin = () => {
     if (email === 'yoga@mail.com' && password === 'admin') {
       Alert.alert('Success', 'Login Success');
+      navigation.navigate('AuthHome');
     } else {
       Alert.alert('Error', 'Wrong email or password');
     }
@@ -52,9 +53,12 @@ const Login = () => {
               secure={true}
             />
           </View>
-          <Text style={[styleLocal.forgotPassword, styles.fW600, styles.fZ14]}>
-            Forgot password?
-          </Text>
+          <TouchableOpacity onPress={() => navigation.navigate('input email')}>
+            <Text
+              style={[styleLocal.forgotPassword, styles.fW600, styles.fZ14]}>
+              Forgot password?
+            </Text>
+          </TouchableOpacity>
           <View style={[styles.buttonWrapper, styleLocal.marginButton]}>
             <TouchableOpacity onPress={onLogin}>
               <View style={styles.button}>
@@ -72,10 +76,12 @@ const Login = () => {
               styleLocal.marginButton,
             ]}>
             Don't have an account? Let's
-            <Text style={[styles.fZ16, styles.fW700, styles.cPrimary]}>
-              {' '}
-              Sign Up
-            </Text>
+            <TouchableOpacity onPress={() => navigation.navigate('sign up')}>
+              <Text style={[styles.fZ16, styles.fW700, styles.cPrimary]}>
+                {' '}
+                Sign Up
+              </Text>
+            </TouchableOpacity>
           </Text>
         </ScrollView>
       </View>
@@ -90,6 +96,9 @@ const styleLocal = StyleSheet.create({
   },
   marginButton: {
     marginBottom: 25,
+  },
+  wrapLink: {
+    padding: 0,
   },
 });
 

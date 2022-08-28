@@ -11,7 +11,7 @@ import {
 import styles from '../styles/global';
 import Input from '../components/Input';
 
-const Signup = () => {
+const Signup = ({navigation}) => {
   const [username, setUsername] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -73,10 +73,12 @@ const Signup = () => {
           <View style={styleLocal.marginButton}>
             <Text style={[styles.fZ16, styles.fW400, styles.textCenter]}>
               Already have an account? Let's
-              <Text style={[styles.fZ16, styles.fW700, styles.cPrimary]}>
-                {' '}
-                Login
-              </Text>
+              <TouchableOpacity onPress={() => navigation.navigate('login')}>
+                <Text style={[styles.fZ16, styles.fW700, styles.cPrimary]}>
+                  {' '}
+                  Login
+                </Text>
+              </TouchableOpacity>
             </Text>
           </View>
         </View>

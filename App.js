@@ -18,9 +18,10 @@ import TransferPin from './src/screens/TransferPin';
 import TransactionSuccess from './src/screens/TransactionSuccess';
 import TransactionFailed from './src/screens/TransactionFailed';
 import EditPhone from './src/screens/EditPhone';
+import AuthStack from './src/screens/AuthStack';
 
 const App = () => {
-  return <DummyLab />;
+  return <AuthStack />;
 };
 
 export default App;

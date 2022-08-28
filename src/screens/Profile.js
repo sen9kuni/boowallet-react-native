@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   Switch,
+  ScrollView,
 } from 'react-native';
 import React, {useRef, useState} from 'react';
 import {BACK_PRIMARY, PRIMARY_COLOR, WHITE_COLOR} from '../styles/constant';
@@ -19,7 +20,7 @@ const Profile = () => {
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   return (
-    <View style={styleLocal.wrapper}>
+    <ScrollView style={styleLocal.wrapper}>
       <View style={styleLocal.wrapperHeader}>
         <View style={styleLocal.wrapperPhoto}>
           <Image style={styleLocal.imageStyle} source={imageSource} />
@@ -70,7 +71,7 @@ const Profile = () => {
           <Text style={[styles.fZ16, styles.fW700, styles.cRed]}>Logout</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
