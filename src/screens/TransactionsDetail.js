@@ -1,4 +1,11 @@
-import {View, Text, StyleSheet, ScrollView, Image} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import React from 'react';
 import {BACK_PRIMARY, PRIMARY_COLOR, WHITE_COLOR} from '../styles/constant';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -6,7 +13,7 @@ import styles from '../styles/global';
 import Cardtransctions from '../components/Cardtransctions';
 import GraficImage from '../assets/images/graphicstat.png';
 
-const TransactionsDetail = () => {
+const TransactionsDetail = ({navigation}) => {
   return (
     <ScrollView style={styleLocal.wrapperMain}>
       {/* info header */}
@@ -43,9 +50,12 @@ const TransactionsDetail = () => {
       {/* grapfic */}
       <View style={styleLocal.textInfoHistory}>
         <Text style={[styles.fZ18, styles.fW700]}>Transaction History</Text>
-        <Text style={[styles.fZ14, styles.fW600, styles.cPrimary]}>
-          See all
-        </Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Transaction History')}>
+          <Text style={[styles.fZ14, styles.fW600, styles.cPrimary]}>
+            See all
+          </Text>
+        </TouchableOpacity>
       </View>
       <Cardtransctions />
       <Cardtransctions />

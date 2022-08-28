@@ -16,7 +16,7 @@ import styles from '../styles/global';
 import imageSource from '../assets/profile/mainprofile.png';
 import ButtonProfile from '../components/ButtonProfile';
 
-const Profile = () => {
+const Profile = ({navigation}) => {
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   return (
@@ -42,18 +42,26 @@ const Profile = () => {
         </View>
       </View>
       <View style={styleLocal.wrapBtns}>
-        <ButtonProfile
-          texts="Personal Information"
-          adds={<Icon name="arrow-right" size={20} />}
-        />
-        <ButtonProfile
-          texts="Change Password"
-          adds={<Icon name="arrow-right" size={20} />}
-        />
-        <ButtonProfile
-          texts="Change PIN"
-          adds={<Icon name="arrow-right" size={20} />}
-        />
+        <TouchableOpacity
+          onPress={() => navigation.navigate('personal information')}>
+          <ButtonProfile
+            texts="Personal Information"
+            adds={<Icon name="arrow-right" size={20} />}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('change password')}>
+          <ButtonProfile
+            texts="Change Password"
+            adds={<Icon name="arrow-right" size={20} />}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('input old pin')}>
+          <ButtonProfile
+            texts="Change PIN"
+            adds={<Icon name="arrow-right" size={20} />}
+          />
+        </TouchableOpacity>
         <ButtonProfile
           texts="Notification"
           adds={
@@ -66,7 +74,7 @@ const Profile = () => {
           }
         />
       </View>
-      <View>
+      <View style={[styles.mB15]}>
         <TouchableOpacity style={styleLocal.btnLogout}>
           <Text style={[styles.fZ16, styles.fW700, styles.cRed]}>Logout</Text>
         </TouchableOpacity>

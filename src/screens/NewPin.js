@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from '../styles/global';
 import ReactPinView from 'react-native-pin-view';
 
-const NewPin = () => {
+const NewPin = ({navigation}) => {
   const pinView = useRef(null);
   const [enteredPin, setEnteredPin] = React.useState('');
   const [showRemoveButton, setShowRemoveButton] = React.useState(false);
@@ -49,6 +49,7 @@ const NewPin = () => {
             }
             if (key === 'custom_right') {
               Alert.alert('Entered Pin: ' + enteredPin);
+              navigation.navigate('profile');
             }
           }}
           customLeftButton={

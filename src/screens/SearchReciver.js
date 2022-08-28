@@ -1,4 +1,11 @@
-import {View, Text, StyleSheet, ScrollView, TextInput} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TextInput,
+  Dimensions,
+} from 'react-native';
 import React from 'react';
 import {BACK_PRIMARY, SECONDARY_COLOR} from '../styles/constant';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -19,7 +26,7 @@ const SearchReciver = () => {
           </View>
         </View>
       </View>
-      <View style={styleLocal.infoSub}>
+      {/* <View style={styleLocal.infoSub}>
         <Text style={[styles.fZ18, styles.fW700, styles.cCBlack]}>
           Quick Access
         </Text>
@@ -32,7 +39,7 @@ const SearchReciver = () => {
           <CardUsers />
           <CardUsers />
         </ScrollView>
-      </View>
+      </View> */}
       <View style={styleLocal.infoSub2}>
         <Text style={[styles.fZ18, styles.fW700, styles.cCBlack]}>
           All Contacts
@@ -58,6 +65,7 @@ const SearchReciver = () => {
 const styleLocal = StyleSheet.create({
   wrapper: {
     backgroundColor: BACK_PRIMARY,
+    height: Dimensions.get('screen').height + 100,
   },
   infoSub: {
     justifyContent: 'flex-end',
@@ -75,7 +83,7 @@ const styleLocal = StyleSheet.create({
     paddingHorizontal: 16,
   },
   wrapScrollVer: {
-    height: 320,
+    height: 400,
   },
   wraperSearch: {
     paddingHorizontal: 16,

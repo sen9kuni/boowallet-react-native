@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import React, {useRef, useState} from 'react';
 import {BACK_PRIMARY} from '../styles/constant';
@@ -35,7 +36,7 @@ const ChangePassword = () => {
             secure={true}
           />
         </View>
-        <View style={styles.mB40}>
+        <View>
           <Input
             onChange={text => setPassword(text)}
             palceHolder="Repeat Password"
@@ -45,12 +46,10 @@ const ChangePassword = () => {
         </View>
       </View>
       <View style={[styles.buttonWrapper, styleLocal.marginTButton]}>
-        <TouchableOpacity>
-          <View style={styles.buttonPass}>
-            <Text style={[styles.cWhite, styles.fZ18, styles.fW700]}>
-              Change Password
-            </Text>
-          </View>
+        <TouchableOpacity style={styles.buttonPass}>
+          <Text style={[styles.cWhite, styles.fZ18, styles.fW700]}>
+            Change Password
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -65,6 +64,7 @@ const styleLocal = StyleSheet.create({
   },
   marginTButton: {
     marginBottom: 50,
+    marginTop: 180,
   },
 });
 

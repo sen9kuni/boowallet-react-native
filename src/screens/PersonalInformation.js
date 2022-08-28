@@ -10,7 +10,7 @@ import {BACK_PRIMARY} from '../styles/constant';
 import styles from '../styles/global';
 import CardProfileInfo from '../components/CardProfileInfo';
 
-const PersonalInformation = () => {
+const PersonalInformation = ({navigation}) => {
   return (
     <View style={styleLocal.wrapper}>
       <Text style={[styles.fZ16, styles.fW400, styles.ctBlack, styles.mV15]}>
@@ -25,7 +25,7 @@ const PersonalInformation = () => {
           title="Phone Number"
           info="+62 813-9387-7946"
           adds={
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('edit phone')}>
               <Text style={[styles.cPrimary]}>Manage</Text>
             </TouchableOpacity>
           }

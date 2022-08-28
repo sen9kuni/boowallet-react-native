@@ -46,7 +46,7 @@ const styleLocal = StyleSheet.create({
   wrapper: {
     paddingHorizontal: 16,
     backgroundColor: BACK_PRIMARY,
-    height: Dimensions.get('screen').height,
+    height: Dimensions.get('screen').height - 100,
     flexDirection: 'column',
   },
   marginTButton: {

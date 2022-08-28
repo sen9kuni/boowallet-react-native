@@ -163,7 +163,7 @@ const style = StyleSheet.create({
     paddingHorizontal: 110,
     alignItems: 'center',
     borderRadius: 12,
-    marginTop: 250,
+    // marginTop: 250,
     // elevation: 3,
   },
 });

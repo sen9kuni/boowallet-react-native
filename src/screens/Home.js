@@ -14,7 +14,7 @@ import styles from '../styles/global';
 import imageProfile from '../assets/profile/mainprofile.png';
 import Cardtransctions from '../components/Cardtransctions';
 
-const Home = () => {
+const Home = ({navigation}) => {
   return (
     <>
       {/* header */}
@@ -41,13 +41,17 @@ const Home = () => {
       {/* header */}
       {/* button transfer & top up */}
       <View style={styleLocal.wrapper}>
-        <TouchableOpacity style={styleLocal.wrapperButton}>
+        <TouchableOpacity
+          style={styleLocal.wrapperButton}
+          onPress={() => navigation.navigate('Transfer')}>
           <View style={styleLocal.wrapperContent}>
             <Icon name="arrow-up" size={25} color={PRIMARY_COLOR} />
             <Text style={[styles.fZ18, styles.fW700]}>Transfer</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity style={styleLocal.wrapperButton}>
+        <TouchableOpacity
+          style={styleLocal.wrapperButton}
+          onPress={() => navigation.navigate('Top Up')}>
           <View style={styleLocal.wrapperContent}>
             <Icon name="plus" size={25} color={PRIMARY_COLOR} />
             <Text style={[styles.fZ18, styles.fW700]}>Top Up</Text>
@@ -57,9 +61,11 @@ const Home = () => {
       {/* button transfer & top up */}
       <View style={styleLocal.textInfoHistory}>
         <Text style={[styles.fZ18, styles.fW700]}>Transaction History</Text>
-        <Text style={[styles.fZ14, styles.fW600, styles.cPrimary]}>
-          See all
-        </Text>
+        <TouchableOpacity onPress={() => navigation.navigate('History')}>
+          <Text style={[styles.fZ14, styles.fW600, styles.cPrimary]}>
+            See all
+          </Text>
+        </TouchableOpacity>
       </View>
       <ScrollView style={styleLocal.scrollWrapper}>
         <Cardtransctions />

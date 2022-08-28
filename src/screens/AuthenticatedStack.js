@@ -1,24 +1,66 @@
 import {View, Text} from 'react-native';
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import Home from './Home';
-import CreatePin from './CreatePin';
-import PinSuccess from './PinSuccess';
-import SearchReciver from './SearchReciver';
 import TopUp from './TopUp';
-import Profile from './Profile';
+import TransactionStack from './TransactionStack';
+import ProfileStack from './ProfileStack';
+import HistoryStack from './HistoryStack';
 
 const ButtonTab = createBottomTabNavigator();
 
 const AuthenticatedStack = () => {
   return (
     <ButtonTab.Navigator>
-      <ButtonTab.Screen name="Home" component={Home} />
-      <ButtonTab.Screen name="Transfer" component={SearchReciver} />
-      <ButtonTab.Screen name="Top Up" component={TopUp} />
-      <ButtonTab.Screen name="Profile" component={Profile} />
-      {/* <ButtonTab.Screen name="create pin" component={CreatePin} />
-      <ButtonTab.Screen name="create pin success" component={PinSuccess} /> */}
+      <ButtonTab.Screen
+        options={
+          ({headerShown: false},
+          {
+            tabBarIcon: ({focused, color, size}) => (
+              <Icon name="home" size={size} color={color} />
+            ),
+          })
+        }
+        name="Home"
+        component={Home}
+      />
+      <ButtonTab.Screen
+        options={{
+          tabBarIcon: ({focused, color, size}) => (
+            <Icon name="money" size={size} color={color} />
+          ),
+        }}
+        name="Transfer"
+        component={TransactionStack}
+      />
+      <ButtonTab.Screen
+        options={{
+          tabBarIcon: ({focused, color, size}) => (
+            <Icon name="plus" size={size} color={color} />
+          ),
+        }}
+        name="Top Up"
+        component={TopUp}
+      />
+      <ButtonTab.Screen
+        options={{
+          tabBarIcon: ({focused, color, size}) => (
+            <Icon name="file-text-o" size={size} color={color} />
+          ),
+        }}
+        name="History"
+        component={HistoryStack}
+      />
+      <ButtonTab.Screen
+        options={{
+          tabBarIcon: ({focused, color, size}) => (
+            <Icon name="user" size={size} color={color} />
+          ),
+        }}
+        name="Profile"
+        component={ProfileStack}
+      />
     </ButtonTab.Navigator>
   );
 };

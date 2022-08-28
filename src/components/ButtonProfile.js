@@ -5,10 +5,10 @@ import styles from '../styles/global';
 
 const ButtonProfile = ({texts, adds}) => {
   return (
-    <TouchableOpacity style={styleLocal.wrapper}>
+    <View style={styleLocal.wrapper}>
       <Text style={[styles.fZ16, styles.fW700, styles.cCBlack]}>{texts}</Text>
       {adds}
-    </TouchableOpacity>
+    </View>
   );
 };
 
