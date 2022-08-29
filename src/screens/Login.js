@@ -7,20 +7,29 @@ import {
   Alert,
 } from 'react-native';
 import React from 'react';
+import {useDispatch} from 'react-redux';
+// import { Formik } from 'formik';
 
 import styles from '../styles/global';
 import Input from '../components/Input';
+import {login} from '../redux/action/authUser';
 
 const Login = ({navigation}) => {
+  const dispatch = useDispatch();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  // const onLogin = () => {
+  //   if (email === 'yoga@mail.com' && password === 'admin') {
+  //     Alert.alert('Success', 'Login Success');
+  //     navigation.navigate('AuthHome');
+  //   } else {
+  //     Alert.alert('Error', 'Wrong email or password');
+  //   }
+  // };
   const onLogin = () => {
-    if (email === 'yoga@mail.com' && password === 'admin') {
-      Alert.alert('Success', 'Login Success');
-      navigation.navigate('AuthHome');
-    } else {
-      Alert.alert('Error', 'Wrong email or password');
-    }
+    const params = {email: email, password: password};
+    // console.log(params);
+    dispatch(login(params));
   };
   return (
     <ScrollView style={styles.wrapperMain}>
@@ -36,6 +45,7 @@ const Login = ({navigation}) => {
             Login to your existing account to accessall the features in FazzPay.
           </Text>
         </View>
+        {/* <Formik initialValues={} */}
         <ScrollView style={styles.content}>
           <View style={styles.mB60}>
             <Input

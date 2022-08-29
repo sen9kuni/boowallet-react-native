@@ -1,14 +1,24 @@
 import axios from 'axios';
 
-function http(token) {
+// const url = 'http://localhost:3333/';
+const url = 'https://opo-backend-v1.herokuapp.com/';
+
+export const https = token => {
   const headers = {};
   if (token) {
     headers.authorization = `Bearer ${token}`;
   }
   return axios.create({
     headers,
-    baseURL: 'https://fazzpay.herokuapp.com/',
+    baseURL: url,
+    // baseURL: 'http://localhost:3333/',
+    // url: 'http://localhost:3333/',
+    // baseURL: 'https://fazzpay.herokuapp.com/',
   });
-}
+};
 
-export default http;
+// const https = axios.create({
+//   baseURL: 'http://localhost:3333/',
+// });
+
+// export https;

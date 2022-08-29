@@ -1,5 +1,8 @@
 import {View, Text} from 'react-native';
 import React from 'react';
+import {Provider} from 'react-redux';
+import {PersistGate} from 'redux-persist/integration/react';
+import {store, presistor} from './src/redux/store';
 
 import DummyLab from './src/screens/DummyLab';
 import Login from './src/screens/Login';
@@ -21,7 +24,13 @@ import EditPhone from './src/screens/EditPhone';
 import AuthStack from './src/screens/AuthStack';
 
 const App = () => {
-  return <AuthStack />;
+  return (
+    <Provider store={store}>
+      <PersistGate persistor={presistor}>
+        <AuthStack />
+      </PersistGate>
+    </Provider>
+  );
 };
 
 export default App;
