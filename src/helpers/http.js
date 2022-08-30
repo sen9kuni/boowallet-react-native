@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// const url = 'http://localhost:3333/';
-const url = 'https://opo-backend-v1.herokuapp.com/';
+const url = 'http://192.168.138.150:3333/';
+// const url = 'https://boowalletbackend.herokuapp.com/';
 
 export const https = token => {
   const headers = {};

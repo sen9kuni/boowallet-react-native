@@ -7,6 +7,7 @@ import {
   Image,
   Switch,
   ScrollView,
+  RefreshControl,
 } from 'react-native';
 import React, {useRef, useState} from 'react';
 import {BACK_PRIMARY, PRIMARY_COLOR, WHITE_COLOR} from '../styles/constant';
@@ -15,15 +16,47 @@ import Icon2 from 'react-native-vector-icons/Feather';
 import styles from '../styles/global';
 import imageSource from '../assets/profile/mainprofile.png';
 import ButtonProfile from '../components/ButtonProfile';
+import {useDispatch, useSelector} from 'react-redux';
+import {logout} from '../redux/reducers/authUser';
+import {getProfile} from '../redux/action/authUser';
+
+const wait = timeout => {
+  return new Promise(resolve => setTimeout(resolve, timeout));
+};
 
 const Profile = ({navigation}) => {
+  const dispatch = useDispatch();
+  const token = useSelector(state => state.authUser.token);
+  const dataprofile = useSelector(state => state.authUser.dataprofile);
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+  React.useEffect(() => {
+    dispatch(getProfile(token));
+  }, [dispatch, token]);
+  console.log(dataprofile);
+  const dataImage = dataprofile?.picture;
+  const onLogout = () => {
+    dispatch(logout());
+  };
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(2000).then(() => {
+      setRefreshing(false);
+      dispatch(getProfile(token));
+    });
+  }, [dispatch, token]);
   return (
-    <ScrollView style={styleLocal.wrapper}>
+    <ScrollView
+      style={styleLocal.wrapper}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }>
       <View style={styleLocal.wrapperHeader}>
         <View style={styleLocal.wrapperPhoto}>
-          <Image style={styleLocal.imageStyle} source={imageSource} />
+          <Image style={styleLocal.imageStyle} source={{uri: dataImage}} />
         </View>
         <View>
           <TouchableOpacity style={styleLocal.btnEdit}>
@@ -34,10 +67,10 @@ const Profile = ({navigation}) => {
         <View style={styleLocal.wraptext}>
           <Text
             style={[styles.fZ24, styles.fW700, styles.cCBlack, styles.mB15]}>
-            Robert Chandler
+            {dataprofile.fullname ? dataprofile.fullname : '-'}
           </Text>
           <Text style={[styles.fZ16, styles.fW400, styles.ctBlack]}>
-            +62 813-9387-7946
+            {dataprofile.phonenumber ? dataprofile.phonenumber : '-'}
           </Text>
         </View>
       </View>
@@ -75,7 +108,7 @@ const Profile = ({navigation}) => {
         />
       </View>
       <View style={[styles.mB15]}>
-        <TouchableOpacity style={styleLocal.btnLogout}>
+        <TouchableOpacity style={styleLocal.btnLogout} onPress={onLogout}>
           <Text style={[styles.fZ16, styles.fW700, styles.cRed]}>Logout</Text>
         </TouchableOpacity>
       </View>

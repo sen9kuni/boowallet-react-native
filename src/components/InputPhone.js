@@ -11,6 +11,7 @@ const InputPhone = ({
   onChange,
   value,
   defaultValue,
+  name,
 }) => {
   return (
     <View style={stylesLocal.wrapper}>
@@ -22,6 +23,7 @@ const InputPhone = ({
       </View>
       <View style={stylesLocal.inputWrapper}>
         <TextInput
+          name={name}
           placeholder={palceHolder}
           keyboardType={type}
           onChangeText={onChange}

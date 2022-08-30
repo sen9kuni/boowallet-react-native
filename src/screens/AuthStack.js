@@ -10,14 +10,36 @@ import ResetPasswordEmail from './ResetPasswordEmail';
 import ResetPasswordInput from './ResetPasswordInput';
 import Home from './Home';
 import AuthenticatedStack from './AuthenticatedStack';
+import {useDispatch, useSelector} from 'react-redux';
 
 const StackAuth = createNativeStackNavigator();
 
 const AuthStack = () => {
+  const token = useSelector(state => state.authUser.token);
   return (
     <NavigationContainer>
       <StackAuth.Navigator>
-        <StackAuth.Screen name="login" component={Login} />
+        {token ? (
+          <StackAuth.Screen
+            options={{headerShown: false}}
+            name="AuthHome"
+            component={AuthenticatedStack}
+          />
+        ) : (
+          <>
+            <StackAuth.Screen name="login" component={Login} />
+            <StackAuth.Screen name="sign up" component={Signup} />
+            <StackAuth.Screen
+              name="input email"
+              component={ResetPasswordEmail}
+            />
+            <StackAuth.Screen
+              name="resetPassword"
+              component={ResetPasswordInput}
+            />
+          </>
+        )}
+        {/* <StackAuth.Screen name="login" component={Login} />
         <StackAuth.Screen name="sign up" component={Signup} />
         <StackAuth.Screen name="input email" component={ResetPasswordEmail} />
         <StackAuth.Screen name="resetPassword" component={ResetPasswordInput} />
@@ -25,7 +47,7 @@ const AuthStack = () => {
           options={{headerShown: false}}
           name="AuthHome"
           component={AuthenticatedStack}
-        />
+        /> */}
       </StackAuth.Navigator>
     </NavigationContainer>
   );

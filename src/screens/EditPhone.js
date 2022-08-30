@@ -4,15 +4,59 @@ import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
+  Modal,
 } from 'react-native';
 import React, {useRef, useState} from 'react';
-import {BACK_PRIMARY} from '../styles/constant';
+import {BACK_PRIMARY, PRIMARY_COLOR} from '../styles/constant';
+import {Formik} from 'formik';
+import * as Yup from 'yup';
+import 'yup-phone';
+import {useDispatch, useSelector} from 'react-redux';
 import styles from '../styles/global';
 import InputPhone from '../components/InputPhone';
+import {editPhone} from '../redux/action/authUser';
 
-const EditPhone = () => {
+const editPhoneSchema = Yup.object().shape({
+  phonenumber: Yup.string().phone('ID').required(),
+});
+
+const EditPhone = ({navigation}) => {
+  const dispatch = useDispatch();
+  const token = useSelector(state => state.authUser.token);
+  const successMsg = useSelector(state => state.authUser.successMsg);
+  const errorMsg = useSelector(state => state.authUser.errorMsg);
+  const [modalVisible, setModalVisible] = useState(false);
+  const onEdit = value => {
+    // console.log(value.phonenumber);
+    const param = {token: token, phonenumber: value.phonenumber};
+    dispatch(editPhone(param));
+    setModalVisible(true);
+  };
+  const onModal = () => {
+    // setModalVisible(false);
+    navigation.navigate('profile');
+  };
   return (
     <View style={styleLocal.wrapper}>
+      <Modal
+        visible={modalVisible}
+        animationType="slide"
+        transparent
+        onRequestClose={() => {
+          // Alert.alert('Modal has been closed.');
+          setModalVisible(!modalVisible);
+        }}>
+        <View style={styleLocal.centeredView}>
+          <View style={styleLocal.modalView}>
+            <Text>{successMsg ? successMsg : errorMsg}</Text>
+            <TouchableOpacity style={styleLocal.btnModal} onPress={onModal}>
+              <Text style={[styles.fZ16, styles.fW700, styles.cWhite]}>
+                Continue
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
       <Text
         style={[
           styles.fZ16,
@@ -24,20 +68,37 @@ const EditPhone = () => {
         Edit at least one phone number for the transfer ID so you can start
         transfering your money to another user.
       </Text>
-      <InputPhone
-        palceHolder="Enter your phone number"
-        icon="phone"
-        type="numeric"
-      />
-      <View style={[styles.buttonWrapper, styleLocal.marginTButton]}>
-        <TouchableOpacity>
-          <View style={styles.button}>
-            <Text style={[styles.cWhite, styles.fZ18, styles.fW700]}>
-              Continue
-            </Text>
-          </View>
-        </TouchableOpacity>
-      </View>
+      <Formik
+        initialValues={{phonenumber: ''}}
+        validationSchema={editPhoneSchema}
+        onSubmit={onEdit}>
+        {({errors, handleChange, handleSubmit, values, isValid}) => (
+          <>
+            <InputPhone
+              palceHolder="Enter your phone number"
+              name="phonenumber"
+              value={values.phonenumber}
+              onChange={handleChange('phonenumber')}
+              icon="phone"
+              type="numeric"
+            />
+            {errors.phonenumber && (
+              <Text style={[styles.fZ14, styles.cCBlack]}>
+                {errors.phonenumber}
+              </Text>
+            )}
+            <View style={[styles.buttonWrapper, styleLocal.marginTButton]}>
+              <TouchableOpacity onPress={handleSubmit} disabled={!isValid}>
+                <View style={styles.button}>
+                  <Text style={[styles.cWhite, styles.fZ18, styles.fW700]}>
+                    Continue
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </>
+        )}
+      </Formik>
     </View>
   );
 };
@@ -52,6 +113,34 @@ const styleLocal = StyleSheet.create({
   marginTButton: {
     marginTop: 'auto',
     marginBottom: 90,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  btnModal: {
+    marginTop: 15,
+    backgroundColor: PRIMARY_COLOR,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
   },
 });
 

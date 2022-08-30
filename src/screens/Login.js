@@ -8,11 +8,17 @@ import {
 } from 'react-native';
 import React from 'react';
 import {useDispatch} from 'react-redux';
-// import { Formik } from 'formik';
+import {Formik} from 'formik';
+import * as Yup from 'yup';
 
 import styles from '../styles/global';
 import Input from '../components/Input';
 import {login} from '../redux/action/authUser';
+
+const loginSechema = Yup.object().shape({
+  email: Yup.string().email('Invalid email address format').required(),
+  password: Yup.string().min(8).required(),
+});
 
 const Login = ({navigation}) => {
   const dispatch = useDispatch();
@@ -26,10 +32,11 @@ const Login = ({navigation}) => {
   //     Alert.alert('Error', 'Wrong email or password');
   //   }
   // };
-  const onLogin = () => {
-    const params = {email: email, password: password};
-    // console.log(params);
-    dispatch(login(params));
+  const onLogin = value => {
+    // const params = {email: email, password: password};
+    // console.log(value);
+    dispatch(login(value));
+    // navigation.navigate('AuthHome');
   };
   return (
     <ScrollView style={styles.wrapperMain}>
@@ -47,7 +54,66 @@ const Login = ({navigation}) => {
         </View>
         {/* <Formik initialValues={} */}
         <ScrollView style={styles.content}>
-          <View style={styles.mB60}>
+          <Formik
+            initialValues={{email: '', password: ''}}
+            validationSchema={loginSechema}
+            onSubmit={onLogin}>
+            {({errors, handleChange, handleSubmit, values, isValid}) => (
+              <View>
+                <View style={styles.mB60}>
+                  <Input
+                    name="email"
+                    onChange={handleChange('email')}
+                    palceHolder="Enter your e-mail"
+                    icon="envelope"
+                    type="email-address"
+                    value={values.email}
+                  />
+                  {errors.email && (
+                    <Text style={[styles.fZ14, styles.cCBlack]}>
+                      {errors.email}
+                    </Text>
+                  )}
+                </View>
+                <View style={styles.mB15}>
+                  <Input
+                    name="password"
+                    onChange={handleChange('password')}
+                    palceHolder="Enter your password"
+                    icon="lock"
+                    value={values.password}
+                    secure={true}
+                  />
+                  {errors.password && (
+                    <Text style={[styles.fZ14, styles.cCBlack]}>
+                      {errors.password}
+                    </Text>
+                  )}
+                </View>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('input email')}>
+                  <Text
+                    style={[
+                      styleLocal.forgotPassword,
+                      styles.fW600,
+                      styles.fZ14,
+                    ]}>
+                    Forgot password?
+                  </Text>
+                </TouchableOpacity>
+                <View style={[styles.buttonWrapper, styleLocal.marginButton]}>
+                  <TouchableOpacity onPress={handleSubmit} disabled={!isValid}>
+                    <View style={styles.button}>
+                      <Text style={[styles.cWhite, styles.fZ18, styles.fW700]}>
+                        Login
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )}
+          </Formik>
+          {/* <View style={styles.mB60}>
             <Input
               onChange={text => setEmail(text)}
               palceHolder="Enter your e-mail"
@@ -77,7 +143,7 @@ const Login = ({navigation}) => {
                 </Text>
               </View>
             </TouchableOpacity>
-          </View>
+          </View> */}
           <Text
             style={[
               styles.fZ16,

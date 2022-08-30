@@ -40,7 +40,15 @@ const Signup = ({navigation}) => {
           <View style={styles.mB60}>
             <Input
               onChange={text => setUsername(text)}
-              palceHolder="Enter your username"
+              palceHolder="Enter your firstname"
+              icon="user"
+              type="default"
+            />
+          </View>
+          <View style={styles.mB60}>
+            <Input
+              onChange={text => setUsername(text)}
+              palceHolder="Enter your lastname"
               icon="user"
               type="default"
             />

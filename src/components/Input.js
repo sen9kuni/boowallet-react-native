@@ -11,6 +11,7 @@ const Input = ({
   onChange,
   value,
   defaultValue,
+  name,
 }) => {
   const [showText, setShow] = React.useState(false);
   return (
@@ -20,6 +21,7 @@ const Input = ({
       </View>
       <View style={styles.inputWrapper}>
         <TextInput
+          name={name}
           placeholder={palceHolder}
           keyboardType={type}
           secureTextEntry={!showText}

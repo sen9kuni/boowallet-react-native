@@ -1,16 +1,44 @@
-import {View, Text, StyleSheet, ScrollView} from 'react-native';
-import React, {useRef} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Modal,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
+import React, {useRef, useState} from 'react';
 import {BACK_PRIMARY} from '../styles/constant';
 import styles from '../styles/global';
 import CardTopup from '../components/CardTopup';
 import CardListTopup from '../components/CardListTopup';
 
 const TopUp = () => {
+  const [modalVisible, setModalVisible] = useState(false);
   return (
     <ScrollView style={styleLocal.wrapper}>
       <View style={[styles.mT15]}>
         <CardTopup />
       </View>
+      <Modal
+        visible={modalVisible}
+        animationType="slide"
+        transparent
+        onRequestClose={() => {
+          // Alert.alert('Modal has been closed.');
+          setModalVisible(!modalVisible);
+        }}>
+        <View style={styleLocal.centeredView}>
+          <View style={styleLocal.modalView}>
+            <TouchableOpacity onPress={() => setModalVisible(false)}>
+              <Text>Modal brooooo</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+      <TouchableOpacity onPress={() => setModalVisible(true)}>
+        <Text>testmodal</Text>
+      </TouchableOpacity>
       <View>
         <Text
           style={[
@@ -71,6 +99,27 @@ const styleLocal = StyleSheet.create({
     justifyContent: 'flex-end',
     marginTop: 15,
     marginBottom: 15,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
 });
 
