@@ -6,7 +6,7 @@ import styles from '../styles/global';
 
 const CardTopup = () => {
   return (
-    <View style={styleLocal.wrapper}>
+    <View style={styleLocal.wrapperModal}>
       <View>
         <TouchableOpacity style={styleLocal.wrapperBtn}>
           <Icon name="plus" size={35} color={PRIMARY_COLOR} />
@@ -25,7 +25,7 @@ const CardTopup = () => {
 };
 
 const styleLocal = StyleSheet.create({
-  wrapper: {
+  wrapperModal: {
     minHeight: 96,
     backgroundColor: WHITE_COLOR,
     borderRadius: 15,

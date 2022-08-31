@@ -6,11 +6,13 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React, {useRef, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {BACK_PRIMARY} from '../styles/constant';
 import styles from '../styles/global';
 import CardProfileInfo from '../components/CardProfileInfo';
 
 const PersonalInformation = ({navigation}) => {
+  const dataprofile = useSelector(state => state.authUser.dataprofile);
   return (
     <View style={styleLocal.wrapper}>
       <Text style={[styles.fZ16, styles.fW400, styles.ctBlack, styles.mV15]}>
@@ -18,12 +20,21 @@ const PersonalInformation = ({navigation}) => {
         to make changes on your information, contact our support.
       </Text>
       <View>
-        <CardProfileInfo title="First Name" info="Robert" />
-        <CardProfileInfo title="Last Name" info="Chandler" />
-        <CardProfileInfo title="Verified E-mail" info="pewdiepie1@gmail.com" />
+        <CardProfileInfo
+          title="First Name"
+          info={dataprofile.first_name ? dataprofile.first_name : '-'}
+        />
+        <CardProfileInfo
+          title="Last Name"
+          info={dataprofile.last_name ? dataprofile.last_name : '-'}
+        />
+        <CardProfileInfo
+          title="Verified E-mail"
+          info={dataprofile.email ? dataprofile.email : '-'}
+        />
         <CardProfileInfo
           title="Phone Number"
-          info="+62 813-9387-7946"
+          info={dataprofile.phonenumber ? dataprofile.phonenumber : '-'}
           adds={
             <TouchableOpacity onPress={() => navigation.navigate('edit phone')}>
               <Text style={[styles.cPrimary]}>Manage</Text>

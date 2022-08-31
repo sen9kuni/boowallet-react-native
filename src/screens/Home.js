@@ -8,13 +8,30 @@ import {
   Image,
 } from 'react-native';
 import React from 'react';
+import 'intl';
+import 'intl/locale-data/jsonp/en';
 import {BACK_PRIMARY, PRIMARY_COLOR, WHITE_COLOR} from '../styles/constant';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from '../styles/global';
 import imageProfile from '../assets/profile/mainprofile.png';
 import Cardtransctions from '../components/Cardtransctions';
+import {useDispatch, useSelector} from 'react-redux';
+import {getProfile} from '../redux/action/authUser';
+
+export const numberFormat = value =>
+  new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+  }).format(value);
 
 const Home = ({navigation}) => {
+  const dispatch = useDispatch();
+  const token = useSelector(state => state.authUser.token);
+  const dataprofile = useSelector(state => state.authUser.dataprofile);
+  React.useEffect(() => {
+    dispatch(getProfile(token));
+  }, [dispatch, token]);
+  const dataImage = dataprofile?.picture;
   return (
     <>
       {/* header */}
@@ -22,14 +39,14 @@ const Home = ({navigation}) => {
         <View style={styleLocal.warpperCildernHeader}>
           <View style={styleLocal.warpperImageName}>
             <View style={styleLocal.warpperImageProfile}>
-              <Image style={styleLocal.imageStyle} source={imageProfile} />
+              <Image style={styleLocal.imageStyle} source={{uri: dataImage}} />
             </View>
             <View style={styleLocal.warpperNameProfile}>
               <Text style={[styles.fZ14, styles.fW400, styles.cWhite]}>
                 Balance
               </Text>
               <Text style={[styles.fZ24, styles.fW700, styles.cWhite]}>
-                Rp120.000
+                {numberFormat(parseInt(dataprofile?.balance, 10))}
               </Text>
             </View>
           </View>

@@ -1,11 +1,14 @@
 import {View, Text, StyleSheet, Dimensions, Alert} from 'react-native';
 import React, {useRef, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {BACK_PRIMARY, PRIMARY_COLOR} from '../styles/constant';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from '../styles/global';
 import ReactPinView from 'react-native-pin-view';
+import {setCurrentPin} from '../redux/reducers/authUser';
 
 const CurrentPin = ({navigation}) => {
+  const dispatch = useDispatch();
   const pinView = useRef(null);
   const [enteredPin, setEnteredPin] = React.useState('');
   const [showRemoveButton, setShowRemoveButton] = React.useState(false);
@@ -49,7 +52,8 @@ const CurrentPin = ({navigation}) => {
               pinView.current.clear();
             }
             if (key === 'custom_right') {
-              Alert.alert('Entered Pin: ' + enteredPin);
+              // Alert.alert('Entered Pin: ' + enteredPin);
+              dispatch(setCurrentPin(enteredPin));
               navigation.navigate('input new pin');
             }
           }}

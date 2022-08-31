@@ -87,9 +87,9 @@ const EditPhone = ({navigation}) => {
                 {errors.phonenumber}
               </Text>
             )}
-            <View style={[styles.buttonWrapper, styleLocal.marginTButton]}>
+            <View style={[styleLocal.marginTButton]}>
               <TouchableOpacity onPress={handleSubmit} disabled={!isValid}>
-                <View style={styles.button}>
+                <View style={styleLocal.button}>
                   <Text style={[styles.cWhite, styles.fZ18, styles.fW700]}>
                     Continue
                   </Text>
@@ -99,11 +99,33 @@ const EditPhone = ({navigation}) => {
           </>
         )}
       </Formik>
+      {/* <View style={[styleLocal.marginTButton]}>
+        <TouchableOpacity>
+          <View style={styleLocal.button}>
+            <Text style={[styles.cWhite, styles.fZ18, styles.fW700]}>
+              Continue
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </View> */}
     </View>
   );
 };
 
 const styleLocal = StyleSheet.create({
+  buttonWrapper: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  button: {
+    backgroundColor: PRIMARY_COLOR,
+    // width: (Dimensions.get('screen').width * 50) / 100,
+    paddingVertical: 16,
+    // paddingHorizontal: 148,
+    alignItems: 'center',
+    borderRadius: 12,
+    // elevation: 3,
+  },
   wrapper: {
     paddingHorizontal: 16,
     backgroundColor: BACK_PRIMARY,

@@ -1,5 +1,12 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {editPhone, getProfile, login} from '../action/authUser';
+import {
+  changePassword,
+  changePin,
+  editPhone,
+  getProfile,
+  login,
+  topUp,
+} from '../action/authUser';
 
 const initialState = {
   errorMsg: null,
@@ -11,6 +18,7 @@ const initialState = {
   pin: null,
   result: {},
   dataprofile: [],
+  CurrentPin: null,
 };
 
 const authUser = createSlice({
@@ -19,6 +27,12 @@ const authUser = createSlice({
   reducers: {
     logout: () => {
       return initialState;
+    },
+    setCurrentPin: (state, action) => {
+      state.CurrentPin = action.payload;
+    },
+    resetCurrentPin: state => {
+      state.CurrentPin = null;
     },
   },
   extraReducers: build => {
@@ -51,9 +65,33 @@ const authUser = createSlice({
     build.addCase(editPhone.fulfilled, (state, action) => {
       state.successMsg = action.payload.successMsg;
     });
+
+    build.addCase(changePassword.pending, state => {
+      state.errorMsg = null;
+      state.successMsg = null;
+    });
+    build.addCase(changePassword.fulfilled, (state, action) => {
+      state.successMsg = action.payload.successMsg;
+    });
+
+    build.addCase(changePin.pending, state => {
+      state.errorMsg = null;
+      state.successMsg = null;
+    });
+    build.addCase(changePin.fulfilled, (state, action) => {
+      state.successMsg = action.payload.successMsg;
+    });
+
+    build.addCase(topUp.pending, state => {
+      state.errorMsg = null;
+      state.successMsg = null;
+    });
+    build.addCase(topUp.fulfilled, (state, action) => {
+      state.successMsg = action.payload.successMsg;
+    });
   },
 });
 
-export const {logout} = authUser.actions;
-export {login, getProfile, editPhone};
+export const {logout, setCurrentPin, resetCurrentPin} = authUser.actions;
+export {login, getProfile, editPhone, changePassword, changePin, topUp};
 export default authUser.reducer;

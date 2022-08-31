@@ -17,8 +17,8 @@ import styles from '../styles/global';
 import imageSource from '../assets/profile/mainprofile.png';
 import ButtonProfile from '../components/ButtonProfile';
 import {useDispatch, useSelector} from 'react-redux';
-import {logout} from '../redux/reducers/authUser';
 import {getProfile} from '../redux/action/authUser';
+import {logout} from '../redux/reducers/authUser';
 
 const wait = timeout => {
   return new Promise(resolve => setTimeout(resolve, timeout));
@@ -33,7 +33,7 @@ const Profile = ({navigation}) => {
   React.useEffect(() => {
     dispatch(getProfile(token));
   }, [dispatch, token]);
-  console.log(dataprofile);
+  // console.log(dataprofile);
   const dataImage = dataprofile?.picture;
   const onLogout = () => {
     dispatch(logout());

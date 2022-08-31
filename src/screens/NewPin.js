@@ -1,15 +1,38 @@
-import {View, Text, StyleSheet, Dimensions, Alert} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  Alert,
+  TouchableOpacity,
+  Modal,
+} from 'react-native';
 import React, {useRef, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import {BACK_PRIMARY, PRIMARY_COLOR} from '../styles/constant';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from '../styles/global';
 import ReactPinView from 'react-native-pin-view';
+import {changePin} from '../redux/action/authUser';
 
 const NewPin = ({navigation}) => {
   const pinView = useRef(null);
   const [enteredPin, setEnteredPin] = React.useState('');
   const [showRemoveButton, setShowRemoveButton] = React.useState(false);
   const [showCompletedButton, setShowCompletedButton] = React.useState(false);
+  const dispatch = useDispatch();
+  const token = useSelector(state => state.authUser.token);
+  const CurrentPin = useSelector(state => state.authUser.CurrentPin);
+  const successMsg = useSelector(state => state.authUser.successMsg);
+  const errorMsg = useSelector(state => state.authUser.errorMsg);
+  const [modalVisible, setModalVisible] = useState(false);
+  // const onChange = () => {
+  //   const param = {token: token};
+  // };
+  const onModal = () => {
+    // setModalVisible(false);
+    navigation.navigate('profile');
+  };
   React.useEffect(() => {
     if (enteredPin.length > 0) {
       setShowRemoveButton(true);
@@ -24,6 +47,25 @@ const NewPin = ({navigation}) => {
   }, [enteredPin]);
   return (
     <View style={styleLocal.wrapper}>
+      <Modal
+        visible={modalVisible}
+        animationType="slide"
+        transparent
+        onRequestClose={() => {
+          // Alert.alert('Modal has been closed.');
+          setModalVisible(!modalVisible);
+        }}>
+        <View style={styleLocal.centeredView}>
+          <View style={styleLocal.modalView}>
+            <Text>{successMsg ? successMsg : errorMsg}</Text>
+            <TouchableOpacity style={styleLocal.btnModal} onPress={onModal}>
+              <Text style={[styles.fZ16, styles.fW700, styles.cWhite]}>
+                Continue
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
       <Text
         style={[
           styles.fZ16,
@@ -48,8 +90,15 @@ const NewPin = ({navigation}) => {
               pinView.current.clear();
             }
             if (key === 'custom_right') {
-              Alert.alert('Entered Pin: ' + enteredPin);
-              navigation.navigate('profile');
+              // Alert.alert('Entered Pin: ' + enteredPin);
+              // navigation.navigate('profile');
+              const param = {
+                token: token,
+                currentPin: CurrentPin,
+                newPin: enteredPin,
+              };
+              dispatch(changePin(param));
+              setModalVisible(true);
             }
           }}
           customLeftButton={
@@ -89,6 +138,34 @@ const styleLocal = StyleSheet.create({
   btnView: {
     borderWidth: 1,
     borderColor: PRIMARY_COLOR,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  btnModal: {
+    marginTop: 15,
+    backgroundColor: PRIMARY_COLOR,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
   },
 });
 
