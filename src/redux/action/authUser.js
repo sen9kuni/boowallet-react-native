@@ -9,9 +9,9 @@ export const login = createAsyncThunk('auth/login', async params => {
   // console.log('data' + data);
   try {
     const send = qs.stringify(params);
-    console.log(send);
+    // console.log(send);
     const {data} = await https().post('auth/login', send);
-    console.log(data);
+    // console.log(data);
     return data;
   } catch (e) {
     console.log(e);
@@ -124,10 +124,80 @@ export const topUp = createAsyncThunk('auth/topup', async param => {
   dataTopup.time = new Date().toISOString();
   try {
     const send = qs.stringify(dataTopup);
-    console.log(send);
+    // console.log(send);
     const {data} = await https(token).post('authenticated/topup', send);
     result.successMsg = data.message;
     return result;
+  } catch (e) {
+    result.errorMsg = e.response.data.message;
+    return result;
+  }
+});
+
+export const getAllUsers = createAsyncThunk('auth/getAllUsers', async param => {
+  const result = {};
+  const token = param.token;
+  // const page = param.page;
+  const search =
+    param.search === null
+      ? ''
+      : param.search === undefined
+      ? ''
+      : param.search
+      ? param.search
+      : '';
+  try {
+    const {data} = await https(token).get(
+      `authenticated/getAllUsersMk?search=${search}&page=1&limit=9`,
+    );
+    // console.log(data);
+    return data;
+  } catch (e) {
+    result.errorMsg = e.response.data.message;
+    return result;
+  }
+});
+
+export const nextUsers = createAsyncThunk('auth/nextUsers', async param => {
+  const result = {};
+  const token = param.token;
+  const page = param.page;
+  const search =
+    param.search === null
+      ? ''
+      : param.search === undefined
+      ? ''
+      : param.search
+      ? param.search
+      : '';
+  try {
+    const {data} = await https(token).get(
+      `authenticated/getAllUsersMk?search=${search}&page=${page}&limit=9`,
+    );
+    return data;
+  } catch (e) {
+    result.errorMsg = e.response.data.message;
+    return result;
+  }
+});
+
+export const searchUsers = createAsyncThunk('auth/searchUsers', async param => {
+  const result = {};
+  const token = param.token;
+  const page = param.page;
+  const search =
+    param.search === null
+      ? ''
+      : param.search === undefined
+      ? ''
+      : param.search
+      ? param.search
+      : '';
+  try {
+    const {data} = await https(token).get(
+      `authenticated/getAllUsersMk?search=${search}&page=${page}`,
+    );
+    return data;
   } catch (e) {
     result.errorMsg = e.response.data.message;
     return result;

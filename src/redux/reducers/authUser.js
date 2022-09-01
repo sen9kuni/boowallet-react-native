@@ -3,8 +3,11 @@ import {
   changePassword,
   changePin,
   editPhone,
+  getAllUsers,
   getProfile,
   login,
+  nextUsers,
+  searchUsers,
   topUp,
 } from '../action/authUser';
 
@@ -19,6 +22,8 @@ const initialState = {
   result: {},
   dataprofile: [],
   CurrentPin: null,
+  dataUsers: [],
+  nowPage: null,
 };
 
 const authUser = createSlice({
@@ -33,6 +38,12 @@ const authUser = createSlice({
     },
     resetCurrentPin: state => {
       state.CurrentPin = null;
+    },
+    resetPage: state => {
+      state.nowPage = null;
+    },
+    resetDataUsers: state => {
+      state.dataUsers = [];
     },
   },
   extraReducers: build => {
@@ -56,6 +67,36 @@ const authUser = createSlice({
     build.addCase(getProfile.fulfilled, (state, action) => {
       state.successMsg = action.payload.message;
       state.dataprofile = action.payload.results;
+    });
+
+    build.addCase(getAllUsers.pending, state => {
+      state.errorMsg = null;
+      state.successMsg = null;
+    });
+    build.addCase(getAllUsers.fulfilled, (state, action) => {
+      state.successMsg = action.payload.message;
+      state.dataUsers = action.payload.results;
+      state.nowPage = action.payload.pageInfo.currentPage;
+    });
+
+    build.addCase(nextUsers.pending, state => {
+      state.errorMsg = null;
+      state.successMsg = null;
+    });
+    build.addCase(nextUsers.fulfilled, (state, action) => {
+      state.successMsg = action.payload.message;
+      state.dataUsers = [...state.dataUsers, ...action.payload.results];
+      state.nowPage = action.payload.pageInfo.currentPage;
+    });
+
+    build.addCase(searchUsers.pending, state => {
+      state.errorMsg = null;
+      state.successMsg = null;
+    });
+    build.addCase(searchUsers.fulfilled, (state, action) => {
+      state.successMsg = action.payload.message;
+      state.dataUsers = action.payload.results;
+      state.nowPage = action.payload.pageInfo.currentPage;
     });
 
     build.addCase(editPhone.pending, state => {
@@ -92,6 +133,22 @@ const authUser = createSlice({
   },
 });
 
-export const {logout, setCurrentPin, resetCurrentPin} = authUser.actions;
-export {login, getProfile, editPhone, changePassword, changePin, topUp};
+export const {
+  logout,
+  setCurrentPin,
+  resetCurrentPin,
+  resetPage,
+  resetDataUsers,
+} = authUser.actions;
+export {
+  login,
+  getProfile,
+  editPhone,
+  changePassword,
+  changePin,
+  topUp,
+  getAllUsers,
+  nextUsers,
+  searchUsers,
+};
 export default authUser.reducer;

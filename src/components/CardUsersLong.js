@@ -5,19 +5,27 @@ import styles from '../styles/global';
 import ImageProfile from './ImageProfile';
 import imageSource from '../assets/profile/mainprofile.png';
 
-const CardUsersLong = () => {
+const CardUsersLong = ({fullname, imageSrc, phonenum, number}) => {
   return (
     <View style={styleLocal.warpperCildernHeader}>
       <View style={styleLocal.wrapper}>
         <View style={styleLocal.warpperImageName}>
-          <ImageProfile sourceImage={imageSource} />
+          <ImageProfile
+            sourceImage={
+              imageSrc === null
+                ? imageSource
+                : imageSrc === undefined
+                ? imageSource
+                : {uri: imageSrc}
+            }
+          />
         </View>
         <View style={styleLocal.warpperNameProfile}>
           <Text style={[styles.fZ16, styles.fW700, styles.cCBlack]}>
-            Samuel Suhi
+            {fullname} {number}
           </Text>
           <Text style={[styles.fZ14, styles.fW400, styles.cSecondary]}>
-            +62 813-8492-9994
+            {phonenum}
           </Text>
         </View>
       </View>

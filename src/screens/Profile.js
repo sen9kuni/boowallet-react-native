@@ -33,7 +33,7 @@ const Profile = ({navigation}) => {
   React.useEffect(() => {
     dispatch(getProfile(token));
   }, [dispatch, token]);
-  // console.log(dataprofile);
+  console.log(dataprofile);
   const dataImage = dataprofile?.picture;
   const onLogout = () => {
     dispatch(logout());
@@ -67,7 +67,9 @@ const Profile = ({navigation}) => {
         <View style={styleLocal.wraptext}>
           <Text
             style={[styles.fZ24, styles.fW700, styles.cCBlack, styles.mB15]}>
-            {dataprofile.fullname ? dataprofile.fullname : '-'}
+            {dataprofile.first_name
+              ? `${dataprofile.first_name} ${dataprofile.last_name}`
+              : '-'}
           </Text>
           <Text style={[styles.fZ16, styles.fW400, styles.ctBlack]}>
             {dataprofile.phonenumber ? dataprofile.phonenumber : '-'}
