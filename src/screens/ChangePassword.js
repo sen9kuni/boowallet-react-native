@@ -12,7 +12,7 @@ import React, {useRef, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
-import {BACK_PRIMARY, PRIMARY_COLOR} from '../styles/constant';
+import {BACK_PRIMARY, PRIMARY_COLOR, SECONDARY_BLACK} from '../styles/constant';
 import styles from '../styles/global';
 import Input from '../components/Input';
 import {changePassword} from '../redux/action/authUser';
@@ -136,7 +136,10 @@ const ChangePassword = ({navigation}) => {
             </View>
             <View style={[styleLocal.marginTButton]}>
               <TouchableOpacity onPress={handleSubmit} disabled={!isValid}>
-                <View style={styleLocal.button}>
+                <View
+                  style={
+                    !isValid ? styleLocal.buttonDisable : styleLocal.button
+                  }>
                   <Text style={[styles.cWhite, styles.fZ18, styles.fW700]}>
                     Change Password
                   </Text>
@@ -162,6 +165,15 @@ const styleLocal = StyleSheet.create({
   },
   button: {
     backgroundColor: PRIMARY_COLOR,
+    // width: (Dimensions.get('screen').width * 50) / 100,
+    paddingVertical: 16,
+    // paddingHorizontal: 148,
+    alignItems: 'center',
+    borderRadius: 12,
+    // elevation: 3,
+  },
+  buttonDisable: {
+    backgroundColor: SECONDARY_BLACK,
     // width: (Dimensions.get('screen').width * 50) / 100,
     paddingVertical: 16,
     // paddingHorizontal: 148,

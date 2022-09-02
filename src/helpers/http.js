@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const url = 'http://192.168.250.150:3333/';
+const url = 'http://192.168.2.150:3333/';
 // const url = 'https://boowalletbackend.herokuapp.com/';
 
 export const https = token => {

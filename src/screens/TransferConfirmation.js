@@ -6,12 +6,34 @@ import {
   ScrollView,
 } from 'react-native';
 import React from 'react';
-import {BACK_PRIMARY} from '../styles/constant';
+import 'intl';
+import 'intl/locale-data/jsonp/en';
+import {BACK_PRIMARY, PRIMARY_COLOR} from '../styles/constant';
 import styles from '../styles/global';
 import CardUsersLong from '../components/CardUsersLong';
 import InfoCard from '../components/InfoCard';
+import {useSelector} from 'react-redux';
 
-const TransferConfirmation = () => {
+export const numberFormat = value =>
+  new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+  }).format(value);
+
+const TransferConfirmation = ({navigation}) => {
+  const dataTrans = useSelector(state => state.authUser.dataTrans);
+  const dataProfilelogin = useSelector(state => state.authUser.dataprofile);
+  const dataProfile = useSelector(state => state.authUser.dataChoseprofile);
+  // console.log(dataTrans);
+  // console.log(dataProfilelogin);
+  const options = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  };
+  const date = new Date(dataTrans.time).toLocaleDateString(undefined, options);
+  // console.log(date);
   return (
     <ScrollView style={styleLocal.wrapper}>
       <View style={styleLocal.infoSub}>
@@ -20,20 +42,32 @@ const TransferConfirmation = () => {
         </Text>
       </View>
       <View style={[styles.mB15]}>
-        <CardUsersLong />
+        <CardUsersLong
+          fullname={`${dataProfile.first_name} ${dataProfile.last_name}`}
+          imageSrc={dataProfile.picture}
+          phonenum={dataProfile.phonenumber}
+        />
       </View>
       <View style={styleLocal.infoSub}>
         <Text style={[styles.fZ18, styles.fW700, styles.cCBlack]}>Details</Text>
       </View>
       <View style={styleLocal.wrapInfo}>
-        <InfoCard infoHeader="amount" infoValue="Rp100.000" />
-        <InfoCard infoHeader="Balance Left" infoValue="Rp20.000" />
-        <InfoCard infoHeader="Date & Time" infoValue="May 11, 2020 - 12.20" />
-        <InfoCard infoHeader="Notes" infoValue="For buying some socks" />
+        <InfoCard
+          infoHeader="amount"
+          infoValue={numberFormat(dataTrans.amount)}
+        />
+        <InfoCard
+          infoHeader="Balance Left"
+          infoValue={numberFormat(
+            parseInt(dataProfilelogin.balance, 10) - dataTrans.amount,
+          )}
+        />
+        <InfoCard infoHeader="Date & Time" infoValue={date} />
+        <InfoCard infoHeader="Notes" infoValue={dataTrans.note} />
       </View>
-      <View style={[styles.buttonWrapper, styleLocal.marginTButton]}>
+      <View style={[styleLocal.marginTButton]}>
         <TouchableOpacity>
-          <View style={styles.button}>
+          <View style={styleLocal.button}>
             <Text style={[styles.cWhite, styles.fZ18, styles.fW700]}>
               Continue
             </Text>
@@ -61,6 +95,15 @@ const styleLocal = StyleSheet.create({
   marginTButton: {
     marginTop: 50,
     marginBottom: 50,
+  },
+  button: {
+    backgroundColor: PRIMARY_COLOR,
+    // width: (Dimensions.get('screen').width * 50) / 100,
+    paddingVertical: 16,
+    // paddingHorizontal: 148,
+    alignItems: 'center',
+    borderRadius: 12,
+    // elevation: 3,
   },
 });
 

@@ -5,7 +5,7 @@ import styles from '../styles/global';
 import ImageProfile from './ImageProfile';
 import imageSource from '../assets/profile/mainprofile.png';
 
-const CardUsersLong = ({fullname, imageSrc, phonenum, number}) => {
+const CardUsersLong = ({fullname, imageSrc, phonenum}) => {
   return (
     <View style={styleLocal.warpperCildernHeader}>
       <View style={styleLocal.wrapper}>
@@ -22,7 +22,7 @@ const CardUsersLong = ({fullname, imageSrc, phonenum, number}) => {
         </View>
         <View style={styleLocal.warpperNameProfile}>
           <Text style={[styles.fZ16, styles.fW700, styles.cCBlack]}>
-            {fullname} {number}
+            {fullname}
           </Text>
           <Text style={[styles.fZ14, styles.fW400, styles.cSecondary]}>
             {phonenum}
@@ -41,7 +41,7 @@ const styleLocal = StyleSheet.create({
     paddingVertical: 20,
     borderRadius: 10,
     alignItems: 'center',
-    marginVertical: 10,
+    // marginVertical: 10,
     backgroundColor: WHITE_COLOR,
     elevation: 1,
   },

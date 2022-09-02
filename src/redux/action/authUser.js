@@ -137,7 +137,7 @@ export const topUp = createAsyncThunk('auth/topup', async param => {
 export const getAllUsers = createAsyncThunk('auth/getAllUsers', async param => {
   const result = {};
   const token = param.token;
-  // const page = param.page;
+  const page = param.page;
   const search =
     param.search === null
       ? ''
@@ -148,7 +148,7 @@ export const getAllUsers = createAsyncThunk('auth/getAllUsers', async param => {
       : '';
   try {
     const {data} = await https(token).get(
-      `authenticated/getAllUsersMk?search=${search}&page=1&limit=9`,
+      `authenticated/getAllUsersMk?search=${search}&page=${page}`,
     );
     // console.log(data);
     return data;
@@ -172,7 +172,7 @@ export const nextUsers = createAsyncThunk('auth/nextUsers', async param => {
       : '';
   try {
     const {data} = await https(token).get(
-      `authenticated/getAllUsersMk?search=${search}&page=${page}&limit=9`,
+      `authenticated/getAllUsersMk?search=${search}&page=${page}`,
     );
     return data;
   } catch (e) {
@@ -203,3 +203,55 @@ export const searchUsers = createAsyncThunk('auth/searchUsers', async param => {
     return result;
   }
 });
+
+export const getProfileById = createAsyncThunk(
+  'auth/getProfileById',
+  async param => {
+    const result = {};
+    const token = param.token;
+    const user_id = param.user_id;
+    // console.log(token);
+    // console.log(user_id);
+    try {
+      const {data} = await https(token).get(
+        `authenticated/getUserById/${user_id}`,
+      );
+      return data;
+    } catch (e) {
+      result.errorMsg = e.response.data.message;
+      return result;
+    }
+  },
+);
+
+export const transfer = createAsyncThunk('auth/transfer', async param => {
+  const result = {};
+  const dataTrans = {};
+  const token = param.token;
+  dataTrans.amount = parseInt(param.amount, 10);
+  dataTrans.user_id = parseInt(param.user_id, 10);
+  dataTrans.pin = param.pin;
+  dataTrans.note = param.note;
+  dataTrans.time = new Date().toISOString();
+  dataTrans.type_id_trans = 1;
+  try {
+    const send = qs.stringify(dataTrans);
+    const {data} = await https(token).post('authenticated/transfer', send);
+    return data;
+  } catch (e) {
+    result.errorMsg = e.response.data.message;
+    return result;
+  }
+});
+
+export const getHistory = createAsyncThunk('auth/get-history', async param => {
+  const result = {};
+  const token = param.token;
+  const page = param.page;
+  try {
+    const {data} = await https(token)
+  } catch (e) {
+    result.errorMsg = e.response.data.message;
+    return result;
+  }
+})

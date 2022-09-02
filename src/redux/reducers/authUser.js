@@ -5,6 +5,7 @@ import {
   editPhone,
   getAllUsers,
   getProfile,
+  getProfileById,
   login,
   nextUsers,
   searchUsers,
@@ -24,6 +25,9 @@ const initialState = {
   CurrentPin: null,
   dataUsers: [],
   nowPage: null,
+  dataChoseprofile: {},
+  dataTrans: {},
+  searchKey: null,
 };
 
 const authUser = createSlice({
@@ -44,6 +48,18 @@ const authUser = createSlice({
     },
     resetDataUsers: state => {
       state.dataUsers = [];
+    },
+    setDataTrans: (state, action) => {
+      state.dataTrans = action.payload;
+    },
+    resetDataTrans: state => {
+      state.dataTrans = {};
+    },
+    setSearchkey: (state, action) => {
+      state.searchKey = action.payload;
+    },
+    resetSearchkey: state => {
+      state.searchKey = null;
     },
   },
   extraReducers: build => {
@@ -69,6 +85,15 @@ const authUser = createSlice({
       state.dataprofile = action.payload.results;
     });
 
+    build.addCase(getProfileById.pending, state => {
+      state.errorMsg = null;
+      state.successMsg = null;
+    });
+    build.addCase(getProfileById.fulfilled, (state, action) => {
+      state.successMsg = action.payload.message;
+      state.dataChoseprofile = action.payload.results[0];
+    });
+
     build.addCase(getAllUsers.pending, state => {
       state.errorMsg = null;
       state.successMsg = null;
@@ -85,8 +110,20 @@ const authUser = createSlice({
     });
     build.addCase(nextUsers.fulfilled, (state, action) => {
       state.successMsg = action.payload.message;
-      state.dataUsers = [...state.dataUsers, ...action.payload.results];
-      state.nowPage = action.payload.pageInfo.currentPage;
+      if (
+        action.payload.results !== null &&
+        action.payload.results !== undefined
+      ) {
+        state.dataUsers.push(...action.payload.results);
+      } else {
+        null;
+      }
+      if (
+        action.payload.pageInfo !== null &&
+        action.payload.pageInfo !== undefined
+      ) {
+        state.nowPage = action.payload.pageInfo.currentPage;
+      }
     });
 
     build.addCase(searchUsers.pending, state => {
@@ -139,6 +176,10 @@ export const {
   resetCurrentPin,
   resetPage,
   resetDataUsers,
+  setDataTrans,
+  resetDataTrans,
+  setSearchkey,
+  resetSearchkey,
 } = authUser.actions;
 export {
   login,
@@ -150,5 +191,6 @@ export {
   getAllUsers,
   nextUsers,
   searchUsers,
+  getProfileById,
 };
 export default authUser.reducer;
