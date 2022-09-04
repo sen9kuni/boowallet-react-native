@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  FlatList,
 } from 'react-native';
 import React from 'react';
 import 'intl';
@@ -13,10 +14,10 @@ import 'intl/locale-data/jsonp/en';
 import {BACK_PRIMARY, PRIMARY_COLOR, WHITE_COLOR} from '../styles/constant';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from '../styles/global';
-import imageProfile from '../assets/profile/mainprofile.png';
 import Cardtransctions from '../components/Cardtransctions';
+import CardTransactionExpense from '../components/CardTransactionExpense';
 import {useDispatch, useSelector} from 'react-redux';
-import {getProfile} from '../redux/action/authUser';
+import {getHistoryHome, getProfile} from '../redux/action/authUser';
 
 export const numberFormat = value =>
   new Intl.NumberFormat('id-ID', {
@@ -27,11 +28,16 @@ export const numberFormat = value =>
 const Home = ({navigation}) => {
   const dispatch = useDispatch();
   const token = useSelector(state => state.authUser.token);
+  const loginId = useSelector(state => state.authUser.id);
+  const dataHistoryHome = useSelector(state => state.authUser.dataHistoryHome);
   const dataprofile = useSelector(state => state.authUser.dataprofile);
   React.useEffect(() => {
+    const param = {token: token, page: 1};
     dispatch(getProfile(token));
+    dispatch(getHistoryHome(param));
   }, [dispatch, token]);
   const dataImage = dataprofile?.picture;
+  console.log(dataHistoryHome);
   return (
     <>
       {/* header */}
@@ -84,16 +90,44 @@ const Home = ({navigation}) => {
           </Text>
         </TouchableOpacity>
       </View>
-      <ScrollView style={styleLocal.scrollWrapper}>
-        <Cardtransctions />
-        <Cardtransctions />
-        <Cardtransctions />
-        <Cardtransctions />
-        <Cardtransctions />
-      </ScrollView>
+      <View>
+        <FlatList
+          data={dataHistoryHome}
+          keyExtractor={(item, index) =>
+            item.id + item.receiverfirstname + index
+          }
+          ItemSeparatorComponent={() => <View style={styleLocal.sparator} />}
+          renderItem={({item}) => {
+            return (
+              <>
+                {item.receiverid !== parseInt(loginId, 10) ? (
+                  <View style={styleLocal.paddH}>
+                    <CardTransactionExpense
+                      fullname={`${item.receiverfirstname} ${item.receiverlastname}`}
+                      typeTrans={item.type}
+                      imageSrc={item.imgreceiver}
+                      amount={numberFormat(parseInt(item.amount, 10))}
+                    />
+                  </View>
+                ) : (
+                  <View style={styleLocal.paddH}>
+                    <Cardtransctions
+                      fullname={`${item.receiverfirstname} ${item.receiverlastname}`}
+                      typeTrans={item.type}
+                      imageSrc={item.imgreceiver}
+                      amount={numberFormat(parseInt(item.amount, 10))}
+                    />
+                  </View>
+                )}
+              </>
+            );
+          }}
+        />
+      </View>
     </>
   );
 };
+
 const styleLocal = StyleSheet.create({
   wrapper: {
     width: Dimensions.get('screen').width,
@@ -169,6 +203,12 @@ const styleLocal = StyleSheet.create({
   },
   scrollWrapper: {
     backgroundColor: BACK_PRIMARY,
+  },
+  sparator: {
+    height: 5,
+  },
+  paddH: {
+    paddingHorizontal: 16,
   },
 });
 

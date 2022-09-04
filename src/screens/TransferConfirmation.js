@@ -24,8 +24,6 @@ const TransferConfirmation = ({navigation}) => {
   const dataTrans = useSelector(state => state.authUser.dataTrans);
   const dataProfilelogin = useSelector(state => state.authUser.dataprofile);
   const dataProfile = useSelector(state => state.authUser.dataChoseprofile);
-  // console.log(dataTrans);
-  // console.log(dataProfilelogin);
   const options = {
     weekday: 'long',
     year: 'numeric',
@@ -33,7 +31,6 @@ const TransferConfirmation = ({navigation}) => {
     day: 'numeric',
   };
   const date = new Date(dataTrans.time).toLocaleDateString(undefined, options);
-  // console.log(date);
   return (
     <ScrollView style={styleLocal.wrapper}>
       <View style={styleLocal.infoSub}>
@@ -66,7 +63,8 @@ const TransferConfirmation = ({navigation}) => {
         <InfoCard infoHeader="Notes" infoValue={dataTrans.note} />
       </View>
       <View style={[styleLocal.marginTButton]}>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('transaction pin')}>
           <View style={styleLocal.button}>
             <Text style={[styles.cWhite, styles.fZ18, styles.fW700]}>
               Continue

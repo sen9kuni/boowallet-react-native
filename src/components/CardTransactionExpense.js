@@ -5,7 +5,7 @@ import ImageProfile from './ImageProfile';
 import imageSource from '../assets/profile/mainprofile.png';
 import {WHITE_COLOR} from '../styles/constant';
 
-const Cardtransctions = ({fullname, typeTrans, amount, imageSrc}) => {
+const CardTransactionExpense = ({fullname, typeTrans, amount, imageSrc}) => {
   return (
     <View style={styleLocal.warpperCildernHeader}>
       <View style={styleLocal.wrapper}>
@@ -30,9 +30,7 @@ const Cardtransctions = ({fullname, typeTrans, amount, imageSrc}) => {
         </View>
       </View>
       <View>
-        <Text style={[styles.fZ18, styles.fW700, styles.cGreen]}>
-          +{amount}
-        </Text>
+        <Text style={[styles.fZ18, styles.fW700, styles.cRed]}>-{amount}</Text>
       </View>
     </View>
   );
@@ -67,4 +65,4 @@ const styleLocal = StyleSheet.create({
   },
 });
 
-export default Cardtransctions;
+export default CardTransactionExpense;

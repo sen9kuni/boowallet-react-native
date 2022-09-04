@@ -3,13 +3,16 @@ import {
   changePassword,
   changePin,
   editPhone,
+  editProfileName,
   getAllUsers,
+  getHistoryHome,
   getProfile,
   getProfileById,
   login,
   nextUsers,
   searchUsers,
   topUp,
+  transfer,
 } from '../action/authUser';
 
 const initialState = {
@@ -28,6 +31,8 @@ const initialState = {
   dataChoseprofile: {},
   dataTrans: {},
   searchKey: null,
+  dataHistory: [],
+  dataHistoryHome: [],
 };
 
 const authUser = createSlice({
@@ -85,6 +90,24 @@ const authUser = createSlice({
       state.dataprofile = action.payload.results;
     });
 
+    build.addCase(editProfileName.pending, state => {
+      state.errorMsg = null;
+      state.successMsg = null;
+    });
+    build.addCase(editProfileName.fulfilled, (state, action) => {
+      state.successMsg = action.payload.message;
+      // state.dataprofile = action.payload.results;
+      state.dataprofile.first_name = action.payload.results.first_name;
+      state.dataprofile.last_name = action.payload.results.last_name;
+      state.dataprofile.fullname = action.payload.results.fullname;
+      state.dataprofile.phonenumber = action.payload.results.phonenumber;
+      state.dataprofile.picture = action.payload.results.picture;
+      state.dataprofile.balance = action.payload.results.balance;
+    });
+    build.addCase(editProfileName.rejected, (state, action) => {
+      state.errorMsg = action.payload.errorMsg;
+    });
+
     build.addCase(getProfileById.pending, state => {
       state.errorMsg = null;
       state.successMsg = null;
@@ -92,6 +115,15 @@ const authUser = createSlice({
     build.addCase(getProfileById.fulfilled, (state, action) => {
       state.successMsg = action.payload.message;
       state.dataChoseprofile = action.payload.results[0];
+    });
+
+    build.addCase(getHistoryHome.pending, state => {
+      state.errorMsg = null;
+      state.successMsg = null;
+    });
+    build.addCase(getHistoryHome.fulfilled, (state, action) => {
+      state.successMsg = action.payload.message;
+      state.dataHistoryHome = action.payload.results;
     });
 
     build.addCase(getAllUsers.pending, state => {
@@ -167,6 +199,14 @@ const authUser = createSlice({
     build.addCase(topUp.fulfilled, (state, action) => {
       state.successMsg = action.payload.successMsg;
     });
+
+    build.addCase(transfer.pending, state => {
+      state.errorMsg = null;
+      state.successMsg = null;
+    });
+    build.addCase(transfer.fulfilled, (state, action) => {
+      state.successMsg = action.payload.message;
+    });
   },
 });
 
@@ -192,5 +232,8 @@ export {
   nextUsers,
   searchUsers,
   getProfileById,
+  getHistoryHome,
+  transfer,
+  editProfileName,
 };
 export default authUser.reducer;

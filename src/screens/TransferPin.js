@@ -1,12 +1,29 @@
-import {View, Text, StyleSheet, Dimensions, Alert} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  Alert,
+  TouchableOpacity,
+  Modal,
+} from 'react-native';
 import React, {useRef} from 'react';
 import {PRIMARY_COLOR} from '../styles/constant';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from '../styles/global';
 import ReactPinView from 'react-native-pin-view';
+import {useDispatch, useSelector} from 'react-redux';
+import {transfer} from '../redux/action/authUser';
 
-const TransferPin = () => {
+const TransferPin = ({navigation}) => {
+  const dispatch = useDispatch();
   const pinView = useRef(null);
+  const dataTrans = useSelector(state => state.authUser.dataTrans);
+  const token = useSelector(state => state.authUser.token);
+  const loginId = useSelector(state => state.authUser.id);
+  const successMsg = useSelector(state => state.authUser.successMsg);
+  const errorMsg = useSelector(state => state.authUser.errorMsg);
+  const [modalVisible, setModalVisible] = React.useState(false);
   const [enteredPin, setEnteredPin] = React.useState('');
   const [showRemoveButton, setShowRemoveButton] = React.useState(false);
   const [showCompletedButton, setShowCompletedButton] = React.useState(false);
@@ -22,8 +39,47 @@ const TransferPin = () => {
       setShowCompletedButton(false);
     }
   }, [enteredPin]);
+  const onModal = () => {
+    successMsg !== 'Wrong input Pin'
+      ? navigation.navigate('transaction success')
+      : navigation.navigate('transaction failed');
+    setModalVisible(false);
+  };
+  const onTransfer = value => {
+    const param = {
+      amount: dataTrans.amount,
+      note: dataTrans.note,
+      recipient_id: dataTrans.user_id,
+      pin: value,
+      time: dataTrans.time,
+      token: token,
+    };
+    // console.log(param);
+    setModalVisible(true);
+    dispatch(transfer(param));
+  };
+  // console.log(dataTrans);
   return (
     <View style={styleLocal.wrapper}>
+      <Modal
+        visible={modalVisible}
+        animationType="slide"
+        transparent
+        // onRequestClose={() => {
+        //   setModalVisible(!modalVisible);
+        // }}
+      >
+        <View style={styleLocal.centeredView}>
+          <View style={styleLocal.modalView}>
+            <Text>{successMsg}</Text>
+            <TouchableOpacity style={styleLocal.btnModal} onPress={onModal}>
+              <Text style={[styles.fZ16, styles.fW700, styles.cWhite]}>
+                Continue
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
       <View style={styleLocal.pgWrapper}>
         <Text style={[styles.fZ16, styles.fW400, styles.tCenter]}>
           Enter your 6 digits PIN for confirmation to continue transferring
@@ -44,7 +100,8 @@ const TransferPin = () => {
               pinView.current.clear();
             }
             if (key === 'custom_right') {
-              Alert.alert('Entered Pin: ' + enteredPin);
+              // Alert.alert('Entered Pin: ' + enteredPin);
+              onTransfer(enteredPin);
             }
           }}
           customLeftButton={
@@ -82,6 +139,34 @@ const styleLocal = StyleSheet.create({
   btnView: {
     borderWidth: 1,
     borderColor: PRIMARY_COLOR,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  btnModal: {
+    marginTop: 15,
+    backgroundColor: PRIMARY_COLOR,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
   },
 });
 

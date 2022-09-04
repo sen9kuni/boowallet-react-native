@@ -46,10 +46,10 @@ const SearchReciver = ({navigation}) => {
     const param = {page: 1, token: token, search: ''};
     await dispatch(getAllUsers(param));
   };
-  const nextPage = () => {
+  const nextPage = async () => {
     const dumy = onPage + 1;
     const param = {page: dumy, token: token, search: searchKey};
-    dispatch(nextUsers(param));
+    await dispatch(nextUsers(param));
   };
   const onChoseProfile = user_id => {
     const param = {user_id: user_id, token: token};

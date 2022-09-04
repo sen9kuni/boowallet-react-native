@@ -1,6 +1,7 @@
 import {StyleSheet, Dimensions} from 'react-native';
 
 import {
+  GREEN,
   PRIMARY_COLOR,
   SECONDARY_BLACK,
   SECONDARY_TRANS,
@@ -32,7 +33,7 @@ const style = StyleSheet.create({
     color: THRID_TBLACK,
   },
   cGreen: {
-    color: 'green',
+    color: GREEN,
   },
   cRed: {
     color: 'red',
@@ -165,6 +166,15 @@ const style = StyleSheet.create({
     borderRadius: 12,
     // marginTop: 250,
     // elevation: 3,
+  },
+  flexRow: {
+    flexDirection: 'row',
+  },
+  jAround: {
+    justifyContent: 'space-around',
+  },
+  w100: {
+    width: 200,
   },
 });
 

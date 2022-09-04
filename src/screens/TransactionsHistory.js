@@ -15,7 +15,7 @@ import Cardtransctions from '../components/Cardtransctions';
 const TransactionsHistory = () => {
   return (
     <View style={styleLocal.wrapper}>
-      <View style={styleLocal.wrapperScroll}>
+      {/* <View style={styleLocal.wrapperScroll}>
         <ScrollView>
           <View style={styleLocal.infoSub}>
             <Text style={[styles.fZ16, styles.fW400, styles.cCBlack]}>
@@ -37,7 +37,7 @@ const TransactionsHistory = () => {
           <Cardtransctions />
           <Cardtransctions />
         </ScrollView>
-      </View>
+      </View> */}
       <View style={styleLocal.wrapperButton}>
         <TouchableOpacity style={styleLocal.btnMini}>
           <Icon name="arrow-up" size={25} />
@@ -57,7 +57,7 @@ const TransactionsHistory = () => {
 
 const styleLocal = StyleSheet.create({
   wrapper: {
-    height: Dimensions.get('screen').height,
+    // height: Dimensions.get('screen').height,
     backgroundColor: BACK_PRIMARY,
   },
   wrapperScroll: {

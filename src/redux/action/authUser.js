@@ -3,15 +3,10 @@ import qs from 'qs';
 import {https} from '../../helpers/http';
 
 export const login = createAsyncThunk('auth/login', async params => {
-  // console.log(params);
   let result = {};
-  // const data = await https().post('auth/login', params);
-  // console.log('data' + data);
   try {
     const send = qs.stringify(params);
-    // console.log(send);
     const {data} = await https().post('auth/login', send);
-    // console.log(data);
     return data;
   } catch (e) {
     console.log(e);
@@ -56,6 +51,29 @@ export const getProfile = createAsyncThunk('auth/getProfile', async token => {
     return result;
   }
 });
+
+export const editProfileName = createAsyncThunk(
+  'auth/edit-profile',
+  async param => {
+    const result = {};
+    const dataProfile = {};
+    const token = param.token;
+    dataProfile.first_name = param.first_name;
+    dataProfile.last_name = param.last_name;
+    try {
+      const send = qs.stringify(dataProfile);
+      console.log(send);
+      const {data} = await https(token).patch(
+        'authenticated/profileName',
+        send,
+      );
+      return data;
+    } catch (e) {
+      result.errorMsg = e.response.data.message;
+      return result;
+    }
+  },
+);
 
 export const editPhone = createAsyncThunk('auth/editPhone', async param => {
   const result = {};
@@ -229,14 +247,55 @@ export const transfer = createAsyncThunk('auth/transfer', async param => {
   const dataTrans = {};
   const token = param.token;
   dataTrans.amount = parseInt(param.amount, 10);
-  dataTrans.user_id = parseInt(param.user_id, 10);
+  dataTrans.recipient_id = parseInt(param.recipient_id, 10);
   dataTrans.pin = param.pin;
   dataTrans.note = param.note;
-  dataTrans.time = new Date().toISOString();
+  dataTrans.time = param.time;
+  // new Date().toISOString();
   dataTrans.type_id_trans = 1;
   try {
     const send = qs.stringify(dataTrans);
     const {data} = await https(token).post('authenticated/transfer', send);
+    return data;
+  } catch (e) {
+    result.message = e.response.data.message;
+    return result;
+  }
+});
+
+export const getHistoryHome = createAsyncThunk(
+  'auth/get-history-home',
+  async param => {
+    const result = {};
+    const token = param.token;
+    const page =
+      param.page === null
+        ? 1
+        : param.page === undefined
+        ? 1
+        : param.page
+        ? param.page
+        : 1;
+    try {
+      const {data} = await https(token).get(
+        `authenticated/joinTransactionsJoin?limit=10&page=${page}`,
+      );
+      return data;
+    } catch (e) {
+      result.errorMsg = e.response.data.message;
+      return result;
+    }
+  },
+);
+
+export const getHistory = createAsyncThunk('auth/get-history', async param => {
+  const result = {};
+  const token = param.token;
+  const page = param.page;
+  try {
+    const {data} = await https(token).get(
+      `authenticated/joinTransactionsJoin?limit=5&page=${page}`,
+    );
     return data;
   } catch (e) {
     result.errorMsg = e.response.data.message;
@@ -244,14 +303,20 @@ export const transfer = createAsyncThunk('auth/transfer', async param => {
   }
 });
 
-export const getHistory = createAsyncThunk('auth/get-history', async param => {
-  const result = {};
-  const token = param.token;
-  const page = param.page;
-  try {
-    const {data} = await https(token)
-  } catch (e) {
-    result.errorMsg = e.response.data.message;
-    return result;
-  }
-})
+export const nextGetHistory = createAsyncThunk(
+  'auth/next-get-history',
+  async param => {
+    const result = {};
+    const token = param.token;
+    const page = param.page;
+    try {
+      const {data} = await https(token).get(
+        `authenticated/joinTransactionsJoin?limit=5&page=${page}`,
+      );
+      return data;
+    } catch (e) {
+      result.errorMsg = e.response.data.message;
+      return result;
+    }
+  },
+);

@@ -5,10 +5,9 @@ import {
   ScrollView,
   Modal,
   TouchableOpacity,
-  Alert,
   TextInput,
 } from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
@@ -20,9 +19,9 @@ import {
 } from '../styles/constant';
 import styles from '../styles/global';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import CardTopup from '../components/CardTopup';
+// import CardTopup from '../components/CardTopup';
 import CardListTopup from '../components/CardListTopup';
-import Input from '../components/Input';
+// import Input from '../components/Input';
 import {getProfile, topUp} from '../redux/action/authUser';
 
 const topupSechema = Yup.object().shape({
@@ -32,7 +31,7 @@ const topupSechema = Yup.object().shape({
     .required('must fill amount'),
 });
 
-const TopUp = ({navigation}) => {
+const TopUp = () => {
   const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
   const [modalInfoVisible, setModalInfoVisible] = useState(false);
@@ -58,9 +57,7 @@ const TopUp = ({navigation}) => {
         }}>
         <View style={styleLocal.centeredView}>
           <View style={styleLocal.modalView}>
-            <Text style={[styles.tCenter]}>
-              {successMsg ? successMsg : errorMsg}
-            </Text>
+            <Text style={[styles.tCenter]}>{successMsg}</Text>
             <TouchableOpacity
               style={styleLocal.btnModal}
               onPress={() => setModalInfoVisible(false)}>
