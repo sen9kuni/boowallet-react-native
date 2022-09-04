@@ -8,16 +8,25 @@ import {
   Switch,
   ScrollView,
   RefreshControl,
+  Modal,
+  Alert,
 } from 'react-native';
 import React, {useRef, useState} from 'react';
-import {BACK_PRIMARY, PRIMARY_COLOR, WHITE_COLOR} from '../styles/constant';
+import {
+  BACK_PRIMARY,
+  PRIMARY_COLOR,
+  SECONDARY_BLACK,
+  WHITE_COLOR,
+} from '../styles/constant';
+import * as Progress from 'react-native-progress';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/Feather';
 import styles from '../styles/global';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import imageSource from '../assets/profile/mainprofile.png';
 import ButtonProfile from '../components/ButtonProfile';
 import {useDispatch, useSelector} from 'react-redux';
-import {getProfile} from '../redux/action/authUser';
+import {getProfile, uploadImage} from '../redux/action/authUser';
 import {logout} from '../redux/reducers/authUser';
 
 const wait = timeout => {
@@ -27,19 +36,19 @@ const wait = timeout => {
 const Profile = ({navigation}) => {
   const dispatch = useDispatch();
   const token = useSelector(state => state.authUser.token);
+  // const successMsg = useSelector(state => state.authUser.successMsg);
   const dataprofile = useSelector(state => state.authUser.dataprofile);
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-  React.useEffect(() => {
-    dispatch(getProfile(token));
-  }, [dispatch, token]);
-  console.log(dataprofile);
+  // console.log(dataprofile);
   const dataImage = dataprofile?.picture;
   const onLogout = () => {
     dispatch(logout());
   };
-
+  const [modalVisible, setModalVisible] = React.useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
+  const [imgtemp, setImgtemp] = React.useState(null);
+  const [loadUploadpic, setLoadUploadpic] = React.useState(false);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -48,18 +57,102 @@ const Profile = ({navigation}) => {
       dispatch(getProfile(token));
     });
   }, [dispatch, token]);
+
+  const onModalPic = () => {
+    setModalVisible(true);
+  };
+  const onUploadImage = async data => {
+    await dispatch(uploadImage({data, token}));
+    setLoadUploadpic(false);
+    setModalVisible(false);
+    setImgtemp(null);
+  };
+
+  const pickPic = async type => {
+    const pick = type ? await launchImageLibrary() : await launchCamera();
+    if (pick.assets) {
+      const pictureData = pick.assets[0];
+      setLoadUploadpic(true);
+      if (pictureData.fileSize > 1 * 1000 * 1000) {
+        Alert.alert('Error', 'Filesize too big', [
+          {
+            onPress: () => {
+              setModalVisible(false);
+              setLoadUploadpic(false);
+            },
+          },
+        ]);
+      } else {
+        setImgtemp(pick.assets[0].uri);
+        onUploadImage(pictureData);
+      }
+    }
+  };
+  React.useEffect(() => {
+    dispatch(getProfile(token));
+  }, [dispatch, token]);
   return (
     <ScrollView
       style={styleLocal.wrapper}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }>
+      <Modal
+        visible={modalVisible}
+        animationType="slide"
+        transparent
+        onRequestClose={() => {
+          // Alert.alert('Modal has been closed.');
+          setModalVisible(!modalVisible);
+        }}>
+        <View style={styleLocal.centeredView}>
+          <View style={styleLocal.modalView}>
+            {/* <Text style={[styles.tCenter]}>hello</Text> */}
+            <View style={styleLocal.boxImage}>
+              <Image source={{uri: imgtemp}} style={styleLocal.picturePic} />
+              {loadUploadpic && (
+                <View style={styleLocal.loading}>
+                  <Progress.Circle
+                    size={60}
+                    borderWidth={5}
+                    indeterminate={true}
+                    color={PRIMARY_COLOR}
+                  />
+                </View>
+              )}
+            </View>
+            <View style={styleLocal.wrapBtnsModal}>
+              <TouchableOpacity
+                style={styleLocal.btnModal}
+                onPress={() => pickPic(true)}>
+                <Text style={[styles.fZ16, styles.fW700, styles.cWhite]}>
+                  Galery
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styleLocal.btnModal}
+                onPress={() => pickPic(false)}>
+                <Text style={[styles.fZ16, styles.fW700, styles.cWhite]}>
+                  Camera
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity
+              style={styleLocal.btnModalCancel}
+              onPress={() => setModalVisible(false)}>
+              <Text style={[styles.fZ16, styles.fW700, styles.cWhite]}>
+                Cancel
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
       <View style={styleLocal.wrapperHeader}>
         <View style={styleLocal.wrapperPhoto}>
           <Image style={styleLocal.imageStyle} source={{uri: dataImage}} />
         </View>
         <View>
-          <TouchableOpacity style={styleLocal.btnEdit}>
+          <TouchableOpacity style={styleLocal.btnEdit} onPress={onModalPic}>
             <Icon2 name="edit-2" size={20} />
             <Text>Edit</Text>
           </TouchableOpacity>
@@ -165,6 +258,70 @@ const styleLocal = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 1,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    // minWidth: 300,
+    width: '90%',
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  btnModal: {
+    marginTop: 15,
+    backgroundColor: PRIMARY_COLOR,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+  },
+  btnModalCancel: {
+    marginTop: 15,
+    backgroundColor: 'red',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+  },
+  boxImage: {
+    backgroundColor: SECONDARY_BLACK,
+    width: 150,
+    height: 150,
+    borderRadius: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+  },
+  picturePic: {
+    width: '100%',
+    height: undefined,
+    aspectRatio: 1,
+  },
+  loading: {
+    width: 150,
+    height: 150,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  wrapBtnsModal: {
+    justifyContent: 'space-around',
+    width: 250,
+    flexDirection: 'row',
   },
 });
 

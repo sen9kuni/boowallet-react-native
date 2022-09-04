@@ -320,3 +320,35 @@ export const nextGetHistory = createAsyncThunk(
     }
   },
 );
+
+export const uploadImage = createAsyncThunk(
+  'auth/upload-image',
+  async param => {
+    // const result = {};
+    const form = new FormData();
+    form.append('picture', {
+      uri: param.data.uri,
+      name: param.data.fileName,
+      type: param.data.type,
+    });
+    console.log(form._parts[0]);
+    try {
+      const {data} = await https(param.token).patch(
+        'authenticated/profile',
+        form,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      );
+      console.log('success');
+      return data;
+    } catch (e) {
+      // result.errorMsg = e.response.data.message;
+      // return result;
+      console.log('failed');
+      console.log(e);
+    }
+  },
+);

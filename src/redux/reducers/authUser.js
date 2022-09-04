@@ -13,6 +13,7 @@ import {
   searchUsers,
   topUp,
   transfer,
+  uploadImage,
 } from '../action/authUser';
 
 const initialState = {
@@ -206,6 +207,20 @@ const authUser = createSlice({
     });
     build.addCase(transfer.fulfilled, (state, action) => {
       state.successMsg = action.payload.message;
+    });
+
+    build.addCase(uploadImage.pending, state => {
+      state.errorMsg = null;
+      state.successMsg = null;
+    });
+    build.addCase(uploadImage.fulfilled, (state, action) => {
+      state.successMsg = action.payload.message;
+      if (
+        action.payload.results !== null &&
+        action.payload.results !== undefined
+      ) {
+        state.dataprofile.picture = action.payload.results.picture;
+      }
     });
   },
 });

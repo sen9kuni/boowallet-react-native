@@ -24,6 +24,7 @@ import EditPhone from './src/screens/EditPhone';
 import AuthStack from './src/screens/AuthStack';
 import AuthenticatedStack from './src/screens/AuthenticatedStack';
 import PersonalInformation from './src/screens/PersonalInformation';
+import Profile from './src/screens/Profile';
 
 const App = () => {
   return (
