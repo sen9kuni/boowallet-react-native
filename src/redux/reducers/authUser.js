@@ -2,6 +2,7 @@ import {createSlice} from '@reduxjs/toolkit';
 import {
   changePassword,
   changePin,
+  createPin,
   editPhone,
   editProfileName,
   getAllUsers,
@@ -12,6 +13,7 @@ import {
   login,
   nextGetHistory,
   nextUsers,
+  register,
   searchUsers,
   topUp,
   transfer,
@@ -21,6 +23,7 @@ import {
 const initialState = {
   errorMsg: null,
   successMsg: null,
+  successMsgPin: null,
   resultMsg: {},
   token: null,
   email: null,
@@ -86,6 +89,31 @@ const authUser = createSlice({
       state.pin = action.payload.results.pin;
       state.token = action.payload.results.token;
       state.email = action.payload.results.email;
+    });
+
+    build.addCase(register.pending, state => {
+      state.errorMsg = null;
+      state.successMsg = null;
+    });
+    build.addCase(register.fulfilled, (state, action) => {
+      state.successMsg = action.payload.successMsg;
+      state.errorMsg = action.payload.errorMsg;
+    });
+
+    build.addCase(createPin.pending, state => {
+      state.errorMsg = null;
+      state.successMsg = null;
+    });
+    build.addCase(createPin.fulfilled, (state, action) => {
+      if (
+        action.payload.results !== null &&
+        action.payload.results !== undefined
+      ) {
+        state.pin = action.payload.results.pin;
+      }
+      // state.successMsg = action.payload.message;
+      state.successMsgPin = action.payload.message;
+      state.errorMsg = action.payload.errorMsg;
     });
 
     build.addCase(getProfile.pending, state => {
@@ -284,6 +312,8 @@ export const {
 } = authUser.actions;
 export {
   login,
+  register,
+  createPin,
   getProfile,
   editPhone,
   changePassword,

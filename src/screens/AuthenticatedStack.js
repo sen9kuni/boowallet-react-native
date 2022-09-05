@@ -7,6 +7,7 @@ import TopUp from './TopUp';
 import TransactionStack from './TransactionStack';
 import ProfileStack from './ProfileStack';
 import HistoryStack from './HistoryStack';
+import HomeStack from './HomeStack';
 
 const ButtonTab = createBottomTabNavigator();
 
@@ -22,8 +23,8 @@ const AuthenticatedStack = () => {
             ),
           })
         }
-        name="Home"
-        component={Home}
+        name="HomeStack"
+        component={HomeStack}
       />
       <ButtonTab.Screen
         options={{

@@ -19,12 +19,15 @@ export const register = createAsyncThunk('auth/register', async request => {
   const result = {};
   try {
     const send = qs.stringify(request);
-    const {data} = await https().post('/auth/register', send);
+    console.log(send);
+    const {data} = await https().post('auth/registerNew', send);
     result.successMsg = data.message;
     return result;
   } catch (e) {
-    result.errorMsg = e.response.data.message;
+    result.errorMsg = e.response.data.results[0].msg;
     return result;
+    // console.log(e.response.data.message);
+    // console.log(e.response.data.results[0].msg);
   }
 });
 
@@ -32,9 +35,9 @@ export const createPin = createAsyncThunk('auth/createPin', async request => {
   const result = {};
   try {
     const send = qs.stringify(request);
+    console.log(send);
     const {data} = await https().post('auth/createPin', send);
-    result.successMsg = data.message;
-    return result;
+    return data;
   } catch (e) {
     result.errorMsg = e.response.data.message;
     return result;

@@ -12,6 +12,7 @@ import Home from './Home';
 import AuthenticatedStack from './AuthenticatedStack';
 import {useDispatch, useSelector} from 'react-redux';
 import RNBootSplash from 'react-native-bootsplash';
+import HomeStack from './HomeStack';
 
 const StackAuth = createNativeStackNavigator();
 

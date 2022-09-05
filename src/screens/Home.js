@@ -31,11 +31,15 @@ const Home = ({navigation}) => {
   const loginId = useSelector(state => state.authUser.id);
   const dataHistoryHome = useSelector(state => state.authUser.dataHistoryHome);
   const dataprofile = useSelector(state => state.authUser.dataprofile);
+  const pin = useSelector(state => state.authUser.pin);
   React.useEffect(() => {
     const param = {token: token, page: 1};
     dispatch(getProfile(token));
     dispatch(getHistoryHome(param));
-  }, [dispatch, token]);
+    if (pin === null) {
+      navigation.navigate('Create Pin');
+    }
+  }, [dispatch, navigation, pin, token]);
   const dataImage = dataprofile?.picture;
   console.log(dataHistoryHome);
   return (

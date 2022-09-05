@@ -10,14 +10,20 @@ import {
 import React from 'react';
 import 'intl';
 import 'intl/locale-data/jsonp/en';
-import {BACK_PRIMARY, WHITE_COLOR} from '../styles/constant';
+import {
+  BACK_PRIMARY,
+  GREEN,
+  RED,
+  SECONDARY_BLACK,
+  WHITE_COLOR,
+} from '../styles/constant';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from '../styles/global';
 import Cardtransctions from '../components/Cardtransctions';
 import {useDispatch, useSelector} from 'react-redux';
 import {getHistory, nextGetHistory} from '../redux/action/authUser';
 import CardTransactionExpense from '../components/CardTransactionExpense';
-import { resetNextPageHistory } from '../redux/reducers/authUser';
+import {resetNextPageHistory} from '../redux/reducers/authUser';
 
 export const numberFormat = value =>
   new Intl.NumberFormat('id-ID', {
@@ -31,6 +37,8 @@ const TransactionsHistory = () => {
   const token = useSelector(state => state.authUser.token);
   const dataHistory = useSelector(state => state.authUser.dataHistory);
   const nextPageHistory = useSelector(state => state.authUser.nextPageHistory);
+  const [btnUp, setBtnUp] = React.useState(true);
+  const [btnDown, setBtnDown] = React.useState(true);
   React.useEffect(() => {
     const param = {page: 1, token: token};
     dispatch(getHistory(param));
@@ -44,6 +52,22 @@ const TransactionsHistory = () => {
     if (nextPageHistory !== null && nextPageHistory !== undefined) {
       const param = {page: nextPageHistory, token: token};
       await dispatch(nextGetHistory(param));
+    }
+  };
+  const onDown = () => {
+    if (btnUp === false) {
+      setBtnUp(true);
+      setBtnDown(!btnDown);
+    } else {
+      setBtnDown(!btnDown);
+    }
+  };
+  const onUp = () => {
+    if (btnDown === false) {
+      setBtnDown(true);
+      setBtnUp(!btnUp);
+    } else {
+      setBtnUp(!btnUp);
     }
   };
   return (
@@ -106,11 +130,23 @@ const TransactionsHistory = () => {
         }}
       />
       <View style={styleLocal.wrapperButton}>
-        <TouchableOpacity style={styleLocal.btnMini}>
-          <Icon name="arrow-up" size={25} />
+        <TouchableOpacity
+          style={btnUp ? styleLocal.btnMini : styleLocal.btnMiniUp}
+          onPress={() => onUp()}>
+          <Icon
+            name="arrow-up"
+            size={25}
+            color={btnUp ? SECONDARY_BLACK : WHITE_COLOR}
+          />
         </TouchableOpacity>
-        <TouchableOpacity style={styleLocal.btnMini}>
-          <Icon name="arrow-down" size={25} />
+        <TouchableOpacity
+          style={btnDown ? styleLocal.btnMini : styleLocal.btnMiniDown}
+          onPress={() => onDown()}>
+          <Icon
+            name="arrow-down"
+            size={25}
+            color={btnDown ? SECONDARY_BLACK : WHITE_COLOR}
+          />
         </TouchableOpacity>
         <TouchableOpacity style={styleLocal.btnMedium}>
           <Text style={[styles.fZ18, styles.fW700, styles.cPrimary]}>
@@ -146,6 +182,18 @@ const styleLocal = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
     backgroundColor: WHITE_COLOR,
+    elevation: 1,
+  },
+  btnMiniUp: {
+    padding: 15,
+    borderRadius: 10,
+    backgroundColor: RED,
+    elevation: 1,
+  },
+  btnMiniDown: {
+    padding: 15,
+    borderRadius: 10,
+    backgroundColor: GREEN,
     elevation: 1,
   },
   btnMedium: {

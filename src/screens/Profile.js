@@ -11,7 +11,7 @@ import {
   Modal,
   Alert,
 } from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {useState} from 'react';
 import {
   BACK_PRIMARY,
   PRIMARY_COLOR,
@@ -69,22 +69,44 @@ const Profile = ({navigation}) => {
   };
 
   const pickPic = async type => {
-    const pick = type ? await launchImageLibrary() : await launchCamera();
-    if (pick.assets) {
-      const pictureData = pick.assets[0];
-      setLoadUploadpic(true);
-      if (pictureData.fileSize > 1 * 1000 * 1000) {
-        Alert.alert('Error', 'Filesize too big', [
-          {
-            onPress: () => {
-              setModalVisible(false);
-              setLoadUploadpic(false);
+    const options = {
+      mediaType: 'photo',
+      maxWidth: 500,
+      maxHeight: 500,
+    };
+    const pick = type
+      ? await launchImageLibrary(options, response => {
+          if (response.didCancel) {
+            Alert.alert('User cancel pick image');
+          } else {
+            return response;
+          }
+        })
+      : await launchCamera(options, response => {
+          if (response.didCancel) {
+            Alert.alert('User cancel camera image');
+          } else {
+            return response;
+          }
+        });
+    console.log(pick);
+    if (pick.assets !== null && pick.assets !== undefined) {
+      if (pick.assets) {
+        const pictureData = pick.assets[0];
+        setLoadUploadpic(true);
+        if (pictureData.fileSize > 1 * 1000 * 1000) {
+          Alert.alert('Error', 'Filesize too big', [
+            {
+              onPress: () => {
+                setModalVisible(false);
+                setLoadUploadpic(false);
+              },
             },
-          },
-        ]);
-      } else {
-        setImgtemp(pick.assets[0].uri);
-        onUploadImage(pictureData);
+          ]);
+        } else {
+          setImgtemp(pick.assets[0].uri);
+          onUploadImage(pictureData);
+        }
       }
     }
   };

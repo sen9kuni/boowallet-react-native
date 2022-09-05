@@ -22,16 +22,6 @@ const loginSechema = Yup.object().shape({
 
 const Login = ({navigation}) => {
   const dispatch = useDispatch();
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  // const onLogin = () => {
-  //   if (email === 'yoga@mail.com' && password === 'admin') {
-  //     Alert.alert('Success', 'Login Success');
-  //     navigation.navigate('AuthHome');
-  //   } else {
-  //     Alert.alert('Error', 'Wrong email or password');
-  //   }
-  // };
   const onLogin = value => {
     // const params = {email: email, password: password};
     // console.log(value);

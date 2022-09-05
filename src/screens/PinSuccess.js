@@ -9,12 +9,12 @@ import {
 import React from 'react';
 
 import styles from '../styles/global';
-import {PRIMARY_COLOR} from '../styles/constant';
+import {BACK_PRIMARY, PRIMARY_COLOR, WHITE_COLOR} from '../styles/constant';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const PinSuccess = () => {
+const PinSuccess = ({navigation}) => {
   return (
-    <ScrollView>
+    <ScrollView style={styleLocal.mainWrapper}>
       <View style={styleLocal.wrapper}>
         <Text style={styles.textLogo}>Boo-Wallet</Text>
       </View>
@@ -33,10 +33,10 @@ const PinSuccess = () => {
           </Text>
         </View>
         <View style={[styles.buttonWrapper, styleLocal.marginButton]}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('Home')}>
             <View style={styles.button}>
               <Text style={[styles.cWhite, styles.fZ18, styles.fW700]}>
-                Login Now
+                Home
               </Text>
             </View>
           </TouchableOpacity>
@@ -47,6 +47,9 @@ const PinSuccess = () => {
 };
 
 const styleLocal = StyleSheet.create({
+  mainWrapper: {
+    backgroundColor: BACK_PRIMARY,
+  },
   circleCheck: {
     height: 70,
     width: 70,
@@ -68,6 +71,7 @@ const styleLocal = StyleSheet.create({
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     alignItems: 'center',
+    backgroundColor: WHITE_COLOR,
   },
 });
 

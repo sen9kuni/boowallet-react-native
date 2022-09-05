@@ -1,4 +1,11 @@
-import {View, Text, ScrollView, StyleSheet, Alert} from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  Modal,
+  TouchableOpacity,
+} from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import React, {useRef} from 'react';
@@ -6,12 +13,19 @@ import styles from '../styles/global';
 
 import ReactPinView from 'react-native-pin-view';
 import {PRIMARY_COLOR} from '../styles/constant';
+import {useDispatch, useSelector} from 'react-redux';
+import {createPin} from '../redux/action/authUser';
 
-const CreatePin = () => {
+const CreatePin = ({navigation}) => {
   const pinView = useRef(null);
+  const dispatch = useDispatch();
+  const email = useSelector(state => state.authUser.email);
+  const successMsgPin = useSelector(state => state.authUser.successMsgPin);
+  const errorMsg = useSelector(state => state.authUser.errorMsg);
   const [enteredPin, setEnteredPin] = React.useState('');
   const [showRemoveButton, setShowRemoveButton] = React.useState(false);
   const [showCompletedButton, setShowCompletedButton] = React.useState(false);
+  const [modalVisible, setModalVisible] = React.useState(false);
   React.useEffect(() => {
     if (enteredPin.length > 0) {
       setShowRemoveButton(true);
@@ -24,8 +38,48 @@ const CreatePin = () => {
       setShowCompletedButton(false);
     }
   }, [enteredPin]);
+  const onCreatePin = async value => {
+    // console.log(value);
+    const param = {email: email, pin: value};
+    console.log(param);
+    await dispatch(createPin(param));
+    setModalVisible(true);
+    // if (successMsgPin === 'Create Pin Success') {
+    //   navigation.navigate('Pin Success');
+    // } else if (errorMsg === 'Error: pin already set') {
+    //   Alert.alert('pin alredy set');
+    //   navigation.navigate('Home');
+    // }
+  };
+  const onModal = () => {
+    if (successMsgPin === 'Create Pin Success') {
+      navigation.navigate('PinSuccess');
+    } else if (errorMsg === 'Error: pin already set') {
+      // Alert.alert('pin alredy set');
+      navigation.navigate('Home');
+    }
+  };
   return (
     <ScrollView style={styles.wrapperMain}>
+      <Modal
+        visible={modalVisible}
+        animationType="slide"
+        transparent
+        onRequestClose={() => {
+          // Alert.alert('Modal has been closed.');
+          setModalVisible(!modalVisible);
+        }}>
+        <View style={styleLocal.centeredView}>
+          <View style={styleLocal.modalView}>
+            <Text>{successMsgPin ? successMsgPin : errorMsg}</Text>
+            <TouchableOpacity style={styleLocal.btnModal} onPress={onModal}>
+              <Text style={[styles.fZ16, styles.fW700, styles.cWhite]}>
+                Continue
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
       <View style={styles.header}>
         <Text style={styles.textLogo}>Boo-Wallet</Text>
       </View>
@@ -53,7 +107,8 @@ const CreatePin = () => {
                 pinView.current.clear();
               }
               if (key === 'custom_right') {
-                Alert.alert('Entered Pin: ' + enteredPin);
+                // Alert.alert('Entered Pin: ' + enteredPin);
+                onCreatePin(enteredPin);
               }
             }}
             customLeftButton={
@@ -91,6 +146,34 @@ const styleLocal = StyleSheet.create({
   btnView: {
     borderWidth: 1,
     borderColor: PRIMARY_COLOR,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  btnModal: {
+    marginTop: 15,
+    backgroundColor: PRIMARY_COLOR,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
   },
 });
 
