@@ -5,14 +5,47 @@ import {
   Dimensions,
   TouchableOpacity,
   ScrollView,
+  FlatList,
 } from 'react-native';
 import React from 'react';
+import 'intl';
+import 'intl/locale-data/jsonp/en';
 import {BACK_PRIMARY, WHITE_COLOR} from '../styles/constant';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from '../styles/global';
 import Cardtransctions from '../components/Cardtransctions';
+import {useDispatch, useSelector} from 'react-redux';
+import {getHistory, nextGetHistory} from '../redux/action/authUser';
+import CardTransactionExpense from '../components/CardTransactionExpense';
+import { resetNextPageHistory } from '../redux/reducers/authUser';
+
+export const numberFormat = value =>
+  new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+  }).format(value);
 
 const TransactionsHistory = () => {
+  const dispatch = useDispatch();
+  const loginId = useSelector(state => state.authUser.id);
+  const token = useSelector(state => state.authUser.token);
+  const dataHistory = useSelector(state => state.authUser.dataHistory);
+  const nextPageHistory = useSelector(state => state.authUser.nextPageHistory);
+  React.useEffect(() => {
+    const param = {page: 1, token: token};
+    dispatch(getHistory(param));
+  }, []);
+  const onRefresh = async () => {
+    dispatch(resetNextPageHistory());
+    const param = {page: 1, token: token};
+    dispatch(getHistory(param));
+  };
+  const nextPage = async () => {
+    if (nextPageHistory !== null && nextPageHistory !== undefined) {
+      const param = {page: nextPageHistory, token: token};
+      await dispatch(nextGetHistory(param));
+    }
+  };
   return (
     <View style={styleLocal.wrapper}>
       {/* <View style={styleLocal.wrapperScroll}>
@@ -38,6 +71,40 @@ const TransactionsHistory = () => {
           <Cardtransctions />
         </ScrollView>
       </View> */}
+      <FlatList
+        data={dataHistory}
+        onRefresh={onRefresh}
+        refreshing={false}
+        onEndReached={nextPage ? nextPage : null}
+        onEndReachedThreshold={0.5}
+        ItemSeparatorComponent={() => <View style={styleLocal.sparator} />}
+        keyExtractor={(item, index) => index + 'history' + item.id + item.time}
+        renderItem={({item}) => {
+          return (
+            <>
+              {item.receiverid !== parseInt(loginId, 10) ? (
+                <View style={styleLocal.paddH}>
+                  <CardTransactionExpense
+                    fullname={`${item.receiverfirstname} ${item.receiverlastname}`}
+                    typeTrans={item.type}
+                    imageSrc={item.imgreceiver}
+                    amount={numberFormat(parseInt(item.amount, 10))}
+                  />
+                </View>
+              ) : (
+                <View style={styleLocal.paddH}>
+                  <Cardtransctions
+                    fullname={`${item.receiverfirstname} ${item.receiverlastname}`}
+                    typeTrans={item.type}
+                    imageSrc={item.imgreceiver}
+                    amount={numberFormat(parseInt(item.amount, 10))}
+                  />
+                </View>
+              )}
+            </>
+          );
+        }}
+      />
       <View style={styleLocal.wrapperButton}>
         <TouchableOpacity style={styleLocal.btnMini}>
           <Icon name="arrow-up" size={25} />
@@ -57,8 +124,10 @@ const TransactionsHistory = () => {
 
 const styleLocal = StyleSheet.create({
   wrapper: {
-    // height: Dimensions.get('screen').height,
+    height: Dimensions.get('screen').height - 150,
     backgroundColor: BACK_PRIMARY,
+    justifyContent: 'space-between',
+    flexDirection: 'column',
   },
   wrapperScroll: {
     height: Dimensions.get('screen').height - 150,
@@ -85,6 +154,9 @@ const styleLocal = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: WHITE_COLOR,
     elevation: 1,
+  },
+  sparator: {
+    height: 5,
   },
 });
 

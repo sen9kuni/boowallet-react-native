@@ -11,13 +11,14 @@ import ResetPasswordInput from './ResetPasswordInput';
 import Home from './Home';
 import AuthenticatedStack from './AuthenticatedStack';
 import {useDispatch, useSelector} from 'react-redux';
+import RNBootSplash from 'react-native-bootsplash';
 
 const StackAuth = createNativeStackNavigator();
 
 const AuthStack = () => {
   const token = useSelector(state => state.authUser.token);
   return (
-    <NavigationContainer>
+    <NavigationContainer onReady={() => RNBootSplash.hide()}>
       <StackAuth.Navigator>
         {token ? (
           <StackAuth.Screen

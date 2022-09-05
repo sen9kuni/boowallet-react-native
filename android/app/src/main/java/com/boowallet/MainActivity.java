@@ -4,12 +4,19 @@ import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
 import android.os.Bundle;
+import com.zoontek.rnbootsplash.RNBootSplash;
 
 public class MainActivity extends ReactActivity {
 
+  // old one
+  // @Override
+  // protected void onCreate(Bundle savedInstanceState) {
+  //   super.onCreate(null);
+  // }
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(null);
+    RNBootSplash.init(this); // <- initialize the splash screen
+    super.onCreate(savedInstanceState); // or super.onCreate(null) with react-native-screens
   }
 
   /**

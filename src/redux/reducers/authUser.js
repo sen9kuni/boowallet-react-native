@@ -5,10 +5,12 @@ import {
   editPhone,
   editProfileName,
   getAllUsers,
+  getHistory,
   getHistoryHome,
   getProfile,
   getProfileById,
   login,
+  nextGetHistory,
   nextUsers,
   searchUsers,
   topUp,
@@ -34,6 +36,7 @@ const initialState = {
   searchKey: null,
   dataHistory: [],
   dataHistoryHome: [],
+  nextPageHistory: null,
 };
 
 const authUser = createSlice({
@@ -66,6 +69,9 @@ const authUser = createSlice({
     },
     resetSearchkey: state => {
       state.searchKey = null;
+    },
+    resetNextPageHistory: state => {
+      state.nextPageHistory = null;
     },
   },
   extraReducers: build => {
@@ -125,6 +131,45 @@ const authUser = createSlice({
     build.addCase(getHistoryHome.fulfilled, (state, action) => {
       state.successMsg = action.payload.message;
       state.dataHistoryHome = action.payload.results;
+    });
+
+    build.addCase(getHistory.pending, state => {
+      state.errorMsg = null;
+      state.successMsg = null;
+    });
+    build.addCase(getHistory.fulfilled, (state, action) => {
+      state.successMsg = action.payload.message;
+      state.dataHistory = action.payload.results;
+      if (
+        action.payload.pageInfo !== null &&
+        action.payload.pageInfo !== undefined
+      ) {
+        state.nextPageHistory = action.payload.pageInfo.nextPage;
+      }
+    });
+
+    build.addCase(nextGetHistory.pending, state => {
+      state.errorMsg = null;
+      state.successMsg = null;
+    });
+    build.addCase(nextGetHistory.fulfilled, (state, action) => {
+      state.successMsg = action.payload.message;
+      if (
+        action.payload.results !== null &&
+        action.payload.results !== undefined
+      ) {
+        state.dataHistory.push(...action.payload.results);
+      } else {
+        null;
+      }
+      if (
+        action.payload.pageInfo !== null &&
+        action.payload.pageInfo !== undefined
+      ) {
+        state.nextPageHistory = action.payload.pageInfo.nextPage;
+      } else {
+        state.nextPageHistory = null;
+      }
     });
 
     build.addCase(getAllUsers.pending, state => {
@@ -235,6 +280,7 @@ export const {
   resetDataTrans,
   setSearchkey,
   resetSearchkey,
+  resetNextPageHistory,
 } = authUser.actions;
 export {
   login,
@@ -248,6 +294,8 @@ export {
   searchUsers,
   getProfileById,
   getHistoryHome,
+  getHistory,
+  nextGetHistory,
   transfer,
   editProfileName,
 };
