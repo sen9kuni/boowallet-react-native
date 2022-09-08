@@ -1,25 +1,38 @@
 import axios from 'axios';
+import {logout} from '../redux/reducers/authUser';
+import {store} from '../redux/store';
 
-// const url = 'http://192.168.149.150:3333/';
-const url = 'https://fw9-backend-boowallet.vercel.app/';
+// const url = 'http://192.168.59.150:3333/';
+const url = 'https://boowallet-private-server.vercel.app/';
 // const url = 'https://backendboowallet.herokuapp.com/';
 
-export const https = token => {
+const https = token => {
   const headers = {};
   if (token) {
     headers.authorization = `Bearer ${token}`;
   }
-  return axios.create({
+  const inseptor = axios.create({
     headers,
     baseURL: url,
     // baseURL: 'http://localhost:3333/',
     // url: 'http://localhost:3333/',
     // baseURL: 'https://fazzpay.herokuapp.com/',
   });
+
+  inseptor.interceptors.response.use(
+    config => {
+      // console.log(config);
+      return config;
+    },
+    e => {
+      if (e.response.status === 401) {
+        store.dispatch(logout());
+      }
+      return Promise.reject(e);
+    },
+  );
+
+  return inseptor;
 };
 
-// const https = axios.create({
-//   baseURL: 'http://localhost:3333/',
-// });
-
-// export https;
+export default https;

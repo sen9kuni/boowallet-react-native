@@ -5,7 +5,6 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
-  Alert,
   Modal,
 } from 'react-native';
 import {Formik} from 'formik';
@@ -34,10 +33,8 @@ const Signup = ({navigation}) => {
   const errorMsg = useSelector(state => state.authUser.errorMsg);
   const [modalVisible, setModalVisible] = React.useState(false);
   const onRegister = async value => {
-    // console.log(value);
     await dispatch(register(value));
     setModalVisible(true);
-    // Alert.alert(`succes ${successMsg}, error ${errorMsg}`);
   };
   const onModal = () => {
     if (errorMsg === 'Email already exists') {
@@ -53,7 +50,6 @@ const Signup = ({navigation}) => {
         animationType="slide"
         transparent
         onRequestClose={() => {
-          // Alert.alert('Modal has been closed.');
           setModalVisible(!modalVisible);
         }}>
         <View style={styleLocal.centeredView}>

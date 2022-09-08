@@ -107,7 +107,7 @@ const SearchReciver = ({navigation}) => {
     //   </View>
     // </View>
     <View style={styleLocal.wrapper}>
-      <Formik initialValues={{search: ''}} onSubmit={onSearch}>
+      {/* <Formik initialValues={{search: ''}} onSubmit={onSearch}>
         {({errors, handleChange, handleSubmit, values, isValid}) => (
           <View>
             <View style={styleLocal.wraperSearch}>
@@ -128,7 +128,7 @@ const SearchReciver = ({navigation}) => {
             </View>
           </View>
         )}
-      </Formik>
+      </Formik> */}
       <View>
         <FlatList
           style={styleLocal.listWrap}
@@ -137,20 +137,36 @@ const SearchReciver = ({navigation}) => {
           data={allUsers}
           onEndReached={nextPage ? nextPage : null}
           onEndReachedThreshold={0.5}
-          // ListHeaderComponent={() => {
-          //   return (
-          //     <View style={styleLocal.wraperSearch}>
-          //       <View style={styleLocal.searcher}>
-          //         <View>
-          //           <Icon name="search" size={30} color={SECONDARY_COLOR} />
-          //         </View>
-          //         <View style={styleLocal.inputSearch}>
-          //           <TextInput placeholder="Search receiver here" />
-          //         </View>
-          //       </View>
-          //     </View>
-          //   );
-          // }}
+          ListHeaderComponent={() => {
+            return (
+              <Formik initialValues={{search: ''}} onSubmit={onSearch}>
+                {({errors, handleChange, handleSubmit, values, isValid}) => (
+                  <View>
+                    <View style={styleLocal.wraperSearch}>
+                      <View style={styleLocal.searcher}>
+                        <View>
+                          <Icon
+                            name="search"
+                            size={30}
+                            color={SECONDARY_COLOR}
+                          />
+                        </View>
+                        <View style={styleLocal.inputSearch}>
+                          <TextInput
+                            name="search"
+                            placeholder="Search receiver here"
+                            onSubmitEditing={handleSubmit}
+                            onChangeText={handleChange('search')}
+                            value={values.search}
+                          />
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                )}
+              </Formik>
+            );
+          }}
           ItemSeparatorComponent={() => <View style={styleLocal.sparator} />}
           keyExtractor={(item, index) =>
             item.user_id + index + item.phonenumber
@@ -204,7 +220,7 @@ const styleLocal = StyleSheet.create({
     height: 400,
   },
   wraperSearch: {
-    paddingHorizontal: 16,
+    // paddingHorizontal: 16,
     marginVertical: 15,
   },
   searcher: {

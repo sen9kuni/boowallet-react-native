@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "105119453844",
+    "project_id": "boowallet-1581b",
+    "storage_bucket": "boowallet-1581b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:105119453844:android:1f5d17d2f3606d615a5a81",
+        "android_client_info": {
+          "package_name": "com.boowallet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "105119453844-4fh6fm60piogv89ksvvr60lunqpi0m12.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEvc_IMkpE5zNxX9S282kGPaOBM8nKFwg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "105119453844-4fh6fm60piogv89ksvvr60lunqpi0m12.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -36,21 +36,34 @@ import ButtonProfile from '../components/ButtonProfile';
 import CardProfileInfo from '../components/CardProfileInfo';
 import InputPhone from '../components/InputPhone';
 import NotifIn from '../components/NotifIn';
+import PushNotification from 'react-native-push-notification';
 
 const DummyLab = () => {
+  const notifTrigger = () => {
+    PushNotification.localNotification({
+      channelId: 'general',
+      title: 'Hi',
+      message: 'Message from button press',
+    });
+  };
   return (
-    <View style={styleLocal.wrapper}>
-      <Text>hello</Text>
-      <NotifIn
-        positionUser="reciver"
-        title="Transfered from Joshua Lee"
-        amount="Rp220.000"
-      />
-      <NotifIn
-        positionUser="sender"
-        title="Transfered from Joshua Lee"
-        amount="Rp220.000"
-      />
+    // <View style={styleLocal.wrapper}>
+    //   <Text>hello</Text>
+    //   <NotifIn
+    //     positionUser="reciver"
+    //     title="Transfered from Joshua Lee"
+    //     amount="Rp220.000"
+    //   />
+    //   <NotifIn
+    //     positionUser="sender"
+    //     title="Transfered from Joshua Lee"
+    //     amount="Rp220.000"
+    //   />
+    // </View>
+    <View style={styleLocal.root}>
+      <TouchableOpacity onPress={notifTrigger} style={styleLocal.btn}>
+        <Text style={styleLocal.btnText}>App</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -61,6 +74,24 @@ const styleLocal = StyleSheet.create({
     backgroundColor: BACK_PRIMARY,
     height: Dimensions.get('screen').height,
     flexDirection: 'column',
+  },
+  root: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  btn: {
+    backgroundColor: 'purple',
+    height: 40,
+    borderRadius: 10,
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  btnText: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
   },
 });
 

@@ -74,8 +74,11 @@ const Profile = ({navigation}) => {
       maxWidth: 500,
       maxHeight: 500,
     };
+    const optionsPicker = {
+      mediaType: 'photo',
+    };
     const pick = type
-      ? await launchImageLibrary(options, response => {
+      ? await launchImageLibrary(optionsPicker, response => {
           if (response.didCancel) {
             Alert.alert('User cancel pick image');
           } else {

@@ -26,11 +26,7 @@ const NewPin = ({navigation}) => {
   const successMsg = useSelector(state => state.authUser.successMsg);
   const errorMsg = useSelector(state => state.authUser.errorMsg);
   const [modalVisible, setModalVisible] = useState(false);
-  // const onChange = () => {
-  //   const param = {token: token};
-  // };
   const onModal = () => {
-    // setModalVisible(false);
     navigation.navigate('profile');
   };
   React.useEffect(() => {
@@ -52,7 +48,6 @@ const NewPin = ({navigation}) => {
         animationType="slide"
         transparent
         onRequestClose={() => {
-          // Alert.alert('Modal has been closed.');
           setModalVisible(!modalVisible);
         }}>
         <View style={styleLocal.centeredView}>
@@ -90,8 +85,6 @@ const NewPin = ({navigation}) => {
               pinView.current.clear();
             }
             if (key === 'custom_right') {
-              // Alert.alert('Entered Pin: ' + enteredPin);
-              // navigation.navigate('profile');
               const param = {
                 token: token,
                 currentPin: CurrentPin,

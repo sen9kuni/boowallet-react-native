@@ -4,6 +4,9 @@ import org.apache.tools.ant.taskdefs.condition.Os
 
 buildscript {
     ext {
+        googlePlayServicesVersion = "+" // default: "+"
+        firebaseMessagingVersion = "21.1.0" // default: "21.1.0"
+
         buildToolsVersion = "31.0.0"
         minSdkVersion = 23 //21 // <- AndroidX splashscreen has basic support for 21 (only the background color), so 23 is best
         compileSdkVersion = 31
@@ -27,6 +30,7 @@ buildscript {
         classpath("de.undercouch:gradle-download-task:5.0.1")
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
+        classpath 'com.google.gms:google-services:4.3.13'
     }
 }
 
