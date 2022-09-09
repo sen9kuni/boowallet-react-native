@@ -11,13 +11,19 @@ import {
 import React from 'react';
 import 'intl';
 import 'intl/locale-data/jsonp/en';
-import {BACK_PRIMARY, PRIMARY_COLOR, WHITE_COLOR} from '../styles/constant';
+import {
+  BACK_PRIMARY,
+  PRIMARY_COLOR,
+  RED,
+  WHITE_COLOR,
+} from '../styles/constant';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from '../styles/global';
 import Cardtransctions from '../components/Cardtransctions';
 import CardTransactionExpense from '../components/CardTransactionExpense';
 import {useDispatch, useSelector} from 'react-redux';
-import {getHistoryHome, getProfile} from '../redux/action/authUser';
+import {getHistoryHome} from '../redux/action/history';
+import {getProfile} from '../redux/action/profile';
 
 export const numberFormat = value =>
   new Intl.NumberFormat('id-ID', {
@@ -29,9 +35,15 @@ const Home = ({navigation}) => {
   const dispatch = useDispatch();
   const token = useSelector(state => state.authUser.token);
   const loginId = useSelector(state => state.authUser.id);
-  const dataHistoryHome = useSelector(state => state.authUser.dataHistoryHome);
-  const dataprofile = useSelector(state => state.authUser.dataprofile);
+  const dataHistoryHome = useSelector(
+    state => state.historyUser.dataHistoryHome,
+  );
+  const [notif, setNotif] = React.useState(false);
+
+  const dataprofile = useSelector(state => state.profileUser.dataprofile);
+
   const pin = useSelector(state => state.authUser.pin);
+
   React.useEffect(() => {
     const param = {token: token, page: 1};
     dispatch(getProfile(token));
@@ -40,6 +52,7 @@ const Home = ({navigation}) => {
       navigation.navigate('Create Pin');
     }
   }, [dispatch, navigation, pin, token]);
+
   const dataImage = dataprofile?.picture;
   console.log(dataHistoryHome);
   return (
@@ -61,7 +74,11 @@ const Home = ({navigation}) => {
             </View>
           </View>
           <View>
-            <Icon name="bell-o" size={28} color={WHITE_COLOR} />
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Notifications')}>
+              <Icon name="bell-o" size={28} color={WHITE_COLOR} />
+              {notif && <View style={styleLocal.bubleNotif} />}
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -213,6 +230,14 @@ const styleLocal = StyleSheet.create({
   },
   paddH: {
     paddingHorizontal: 16,
+  },
+  bubleNotif: {
+    position: 'absolute',
+    height: 15,
+    width: 15,
+    backgroundColor: RED,
+    borderRadius: 20,
+    right: 0,
   },
 });
 

@@ -5,7 +5,7 @@ import {BACK_PRIMARY, PRIMARY_COLOR} from '../styles/constant';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from '../styles/global';
 import ReactPinView from 'react-native-pin-view';
-import {setCurrentPin} from '../redux/reducers/authUser';
+import {setCurrentPin} from '../redux/reducers/profileUser';
 
 const CurrentPin = ({navigation}) => {
   const dispatch = useDispatch();

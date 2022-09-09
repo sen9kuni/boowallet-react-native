@@ -10,8 +10,7 @@ export const login = createAsyncThunk('auth/login', async params => {
     const {data} = await https().post('auth/login', send);
     return data;
   } catch (e) {
-    console.log(e);
-    result.errorMsg = e;
+    result.errorMsg = e.response.data.message;
     return result;
   }
 });
@@ -44,6 +43,23 @@ export const createPin = createAsyncThunk('auth/createPin', async request => {
     return result;
   }
 });
+
+export const removeIdFromToken = createAsyncThunk(
+  'auth/remove-userid-token',
+  async request => {
+    // console.log(request);
+    const result = {};
+    try {
+      const send = qs.stringify(request);
+      console.log(send);
+      const {data} = await https().patch('auth/removeUserFromToken', send);
+      return data;
+    } catch (e) {
+      result.errorMsg = e.response.data.message;
+      return result;
+    }
+  },
+);
 
 export const getProfile = createAsyncThunk('auth/getProfile', async token => {
   const result = {};

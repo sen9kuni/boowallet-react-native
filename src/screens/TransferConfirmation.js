@@ -21,9 +21,11 @@ export const numberFormat = value =>
   }).format(value);
 
 const TransferConfirmation = ({navigation}) => {
-  const dataTrans = useSelector(state => state.authUser.dataTrans);
-  const dataProfilelogin = useSelector(state => state.authUser.dataprofile);
-  const dataProfile = useSelector(state => state.authUser.dataChoseprofile);
+  const dataTrans = useSelector(state => state.transactionUser.dataTrans);
+  const dataProfilelogin = useSelector(state => state.profileUser.dataprofile);
+  const dataProfile = useSelector(
+    state => state.transactionUser.dataChoseprofile,
+  );
   const options = {
     weekday: 'long',
     year: 'numeric',

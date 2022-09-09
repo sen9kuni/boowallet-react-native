@@ -16,7 +16,7 @@ import styles from '../styles/global';
 import CardUsersLong from '../components/CardUsersLong';
 import Input from '../components/Input';
 import {useDispatch, useSelector} from 'react-redux';
-import {setDataTrans} from '../redux/reducers/authUser';
+import {setDataTrans} from '../redux/reducers/transactionUser';
 
 const transSechema = Yup.object().shape({
   amount: Yup.number()
@@ -34,8 +34,10 @@ export const numberFormat = value =>
 const AmountInput = ({navigation}) => {
   const dispatch = useDispatch();
   const token = useSelector(state => state.authUser.token);
-  const dataProfile = useSelector(state => state.authUser.dataChoseprofile);
-  const dataProfilelogin = useSelector(state => state.authUser.dataprofile);
+  const dataProfile = useSelector(
+    state => state.transactionUser.dataChoseprofile,
+  );
+  const dataProfilelogin = useSelector(state => state.profileUser.dataprofile);
   const onTrans = value => {
     // console.log(value);
     const param = {

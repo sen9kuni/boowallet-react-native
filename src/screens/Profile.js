@@ -26,8 +26,9 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import imageSource from '../assets/profile/mainprofile.png';
 import ButtonProfile from '../components/ButtonProfile';
 import {useDispatch, useSelector} from 'react-redux';
-import {getProfile, uploadImage} from '../redux/action/authUser';
+import {deleteImage, getProfile, uploadImage} from '../redux/action/profile';
 import {logout} from '../redux/reducers/authUser';
+import {removeIdFromToken} from '../redux/action/authUser';
 
 const wait = timeout => {
   return new Promise(resolve => setTimeout(resolve, timeout));
@@ -36,13 +37,16 @@ const wait = timeout => {
 const Profile = ({navigation}) => {
   const dispatch = useDispatch();
   const token = useSelector(state => state.authUser.token);
-  // const successMsg = useSelector(state => state.authUser.successMsg);
-  const dataprofile = useSelector(state => state.authUser.dataprofile);
+  const fcm_token = useSelector(state => state.notification.fcm_token);
+  const successMsg = useSelector(state => state.profileUser.successMsg);
+  const errorMsg = useSelector(state => state.profileUser.errorMsg);
+  const dataprofile = useSelector(state => state.profileUser.dataprofile);
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-  // console.log(dataprofile);
   const dataImage = dataprofile?.picture;
   const onLogout = () => {
+    const param = {token: fcm_token};
+    dispatch(removeIdFromToken(param));
     dispatch(logout());
   };
   const [modalVisible, setModalVisible] = React.useState(false);
@@ -61,11 +65,20 @@ const Profile = ({navigation}) => {
   const onModalPic = () => {
     setModalVisible(true);
   };
+
+  const onDeleteImage = async () => {
+    await dispatch(deleteImage({token: token}));
+    Alert.alert(successMsg);
+  };
+
   const onUploadImage = async data => {
     await dispatch(uploadImage({data, token}));
     setLoadUploadpic(false);
     setModalVisible(false);
     setImgtemp(null);
+    if (errorMsg === 'upload image failed') {
+      Alert.alert(errorMsg);
+    }
   };
 
   const pickPic = async type => {
@@ -92,7 +105,6 @@ const Profile = ({navigation}) => {
             return response;
           }
         });
-    console.log(pick);
     if (pick.assets !== null && pick.assets !== undefined) {
       if (pick.assets) {
         const pictureData = pick.assets[0];
@@ -174,9 +186,16 @@ const Profile = ({navigation}) => {
       </Modal>
       <View style={styleLocal.wrapperHeader}>
         <View style={styleLocal.wrapperPhoto}>
-          <Image style={styleLocal.imageStyle} source={{uri: dataImage}} />
+          <Image
+            style={styleLocal.imageStyle}
+            source={dataImage ? {uri: dataImage} : imageSource}
+          />
         </View>
-        <View>
+        <View style={styleLocal.editWrap}>
+          <TouchableOpacity style={styleLocal.btnEdit} onPress={onDeleteImage}>
+            <Icon2 name="trash-2" size={21} />
+            <Text>delete</Text>
+          </TouchableOpacity>
           <TouchableOpacity style={styleLocal.btnEdit} onPress={onModalPic}>
             <Icon2 name="edit-2" size={20} />
             <Text>Edit</Text>
@@ -346,6 +365,11 @@ const styleLocal = StyleSheet.create({
   wrapBtnsModal: {
     justifyContent: 'space-around',
     width: 250,
+    flexDirection: 'row',
+  },
+  editWrap: {
+    minWidth: 150,
+    justifyContent: 'space-around',
     flexDirection: 'row',
   },
 });

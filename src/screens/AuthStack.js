@@ -13,15 +13,33 @@ import AuthenticatedStack from './AuthenticatedStack';
 import {useDispatch, useSelector} from 'react-redux';
 import RNBootSplash from 'react-native-bootsplash';
 import HomeStack from './HomeStack';
+import PushNotification from 'react-native-push-notification';
+import {setToken} from '../redux/reducers/notification';
 
 const StackAuth = createNativeStackNavigator();
 
 const AuthStack = () => {
-  const token = useSelector(state => state.authUser.token);
+  const dispatch = useDispatch();
+  const tokenLogin = useSelector(state => state.authUser.token);
+  const fcm_token = useSelector(state => state.notification.fcm_token);
+  PushNotification.configure({
+    onRegister: function (token) {
+      // console.log('TOKEN:', token);
+      // if (fcm_token === null) {
+      dispatch(setToken(token.token));
+      // }
+    },
+    onNotification: function (notification) {
+      console.log('NOTIFICATION:', notification);
+      notification.finish(() => {
+        console.log('finish');
+      });
+    },
+  });
   return (
     <NavigationContainer onReady={() => RNBootSplash.hide()}>
       <StackAuth.Navigator>
-        {token ? (
+        {tokenLogin ? (
           <StackAuth.Screen
             options={{headerShown: false}}
             name="AuthHome"

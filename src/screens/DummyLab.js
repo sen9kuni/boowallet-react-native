@@ -47,24 +47,23 @@ const DummyLab = () => {
     });
   };
   return (
-    // <View style={styleLocal.wrapper}>
-    //   <Text>hello</Text>
-    //   <NotifIn
-    //     positionUser="reciver"
-    //     title="Transfered from Joshua Lee"
-    //     amount="Rp220.000"
-    //   />
-    //   <NotifIn
-    //     positionUser="sender"
-    //     title="Transfered from Joshua Lee"
-    //     amount="Rp220.000"
-    //   />
-    // </View>
-    <View style={styleLocal.root}>
-      <TouchableOpacity onPress={notifTrigger} style={styleLocal.btn}>
-        <Text style={styleLocal.btnText}>App</Text>
-      </TouchableOpacity>
+    <View style={styleLocal.wrapper}>
+      <NotifIn
+        positionUser="reciver"
+        title="Transfered from Joshua Lee"
+        amount="Rp220.000"
+      />
+      <NotifIn
+        positionUser="sender"
+        title="Transfered to Joshua Lee"
+        amount="Rp220.000"
+      />
     </View>
+    // <View style={styleLocal.root}>
+    //   <TouchableOpacity onPress={notifTrigger} style={styleLocal.btn}>
+    //     <Text style={styleLocal.btnText}>App</Text>
+    //   </TouchableOpacity>
+    // </View>
   );
 };
 

@@ -15,7 +15,7 @@ import * as Yup from 'yup';
 import {BACK_PRIMARY, PRIMARY_COLOR, SECONDARY_BLACK} from '../styles/constant';
 import styles from '../styles/global';
 import Input from '../components/Input';
-import {changePassword} from '../redux/action/authUser';
+import {changePassword} from '../redux/action/profile';
 
 const createNewPassSechema = Yup.object().shape({
   currentPassword: Yup.string()
@@ -31,8 +31,8 @@ const ChangePassword = ({navigation}) => {
   // const [password, setPassword] = React.useState('');
   const dispatch = useDispatch();
   const token = useSelector(state => state.authUser.token);
-  const successMsg = useSelector(state => state.authUser.successMsg);
-  const errorMsg = useSelector(state => state.authUser.errorMsg);
+  const successMsg = useSelector(state => state.profileUser.successMsg);
+  const errorMsg = useSelector(state => state.profileUser.errorMsg);
   const [modalVisible, setModalVisible] = useState(false);
   const onChange = value => {
     console.log(value);
@@ -64,7 +64,11 @@ const ChangePassword = ({navigation}) => {
         }}>
         <View style={styleLocal.centeredView}>
           <View style={styleLocal.modalView}>
-            <Text>{successMsg ? successMsg : errorMsg}</Text>
+            <Text>
+              {successMsg === 'Change Password successfully'
+                ? successMsg
+                : errorMsg}
+            </Text>
             <TouchableOpacity style={styleLocal.btnModal} onPress={onModal}>
               <Text style={[styles.fZ16, styles.fW700, styles.cWhite]}>
                 Continue

@@ -15,15 +15,13 @@ const AuthenticatedStack = () => {
   return (
     <ButtonTab.Navigator>
       <ButtonTab.Screen
-        options={
-          ({headerShown: false},
-          {
-            tabBarIcon: ({focused, color, size}) => (
-              <Icon name="home" size={size} color={color} />
-            ),
-          })
-        }
-        name="HomeStack"
+        options={{
+          headerShown: false,
+          tabBarIcon: ({focused, color, size}) => (
+            <Icon name="home" size={size} color={color} />
+          ),
+        }}
+        name="Dashboard"
         component={HomeStack}
       />
       <ButtonTab.Screen

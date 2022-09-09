@@ -14,7 +14,7 @@ import 'yup-phone';
 import {useDispatch, useSelector} from 'react-redux';
 import styles from '../styles/global';
 import InputPhone from '../components/InputPhone';
-import {editPhone} from '../redux/action/authUser';
+import {editPhone} from '../redux/action/profile';
 
 const editPhoneSchema = Yup.object().shape({
   phonenumber: Yup.string().phone('ID').required(),
@@ -23,8 +23,8 @@ const editPhoneSchema = Yup.object().shape({
 const EditPhone = ({navigation}) => {
   const dispatch = useDispatch();
   const token = useSelector(state => state.authUser.token);
-  const successMsg = useSelector(state => state.authUser.successMsg);
-  const errorMsg = useSelector(state => state.authUser.errorMsg);
+  const successMsg = useSelector(state => state.profileUser.successMsg);
+  const errorMsg = useSelector(state => state.profileUser.errorMsg);
   const [modalVisible, setModalVisible] = useState(false);
   const onEdit = value => {
     // console.log(value.phonenumber);

@@ -8,6 +8,7 @@ import {store, presistor} from './src/redux/store';
 
 import AuthStack from './src/screens/AuthStack';
 import DummyLab from './src/screens/DummyLab';
+// import notifications from './src/screens/notifications';
 
 const App = () => {
   return (

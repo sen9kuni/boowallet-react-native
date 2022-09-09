@@ -13,16 +13,16 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from '../styles/global';
 import ReactPinView from 'react-native-pin-view';
 import {useDispatch, useSelector} from 'react-redux';
-import {transfer} from '../redux/action/authUser';
+import {transfer} from '../redux/action/transaction';
 
 const TransferPin = ({navigation}) => {
   const dispatch = useDispatch();
   const pinView = useRef(null);
-  const dataTrans = useSelector(state => state.authUser.dataTrans);
+  const dataTrans = useSelector(state => state.transactionUser.dataTrans);
   const token = useSelector(state => state.authUser.token);
   const loginId = useSelector(state => state.authUser.id);
-  const successMsg = useSelector(state => state.authUser.successMsg);
-  const errorMsg = useSelector(state => state.authUser.errorMsg);
+  const successMsg = useSelector(state => state.transactionUser.successMsg);
+  const errorMsg = useSelector(state => state.transactionUser.errorMsg);
   const [modalVisible, setModalVisible] = React.useState(false);
   const [enteredPin, setEnteredPin] = React.useState('');
   const [showRemoveButton, setShowRemoveButton] = React.useState(false);

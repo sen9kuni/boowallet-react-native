@@ -13,7 +13,7 @@ import {BACK_PRIMARY, PRIMARY_COLOR} from '../styles/constant';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from '../styles/global';
 import ReactPinView from 'react-native-pin-view';
-import {changePin} from '../redux/action/authUser';
+import {changePin} from '../redux/action/profile';
 
 const NewPin = ({navigation}) => {
   const pinView = useRef(null);
@@ -22,9 +22,9 @@ const NewPin = ({navigation}) => {
   const [showCompletedButton, setShowCompletedButton] = React.useState(false);
   const dispatch = useDispatch();
   const token = useSelector(state => state.authUser.token);
-  const CurrentPin = useSelector(state => state.authUser.CurrentPin);
-  const successMsg = useSelector(state => state.authUser.successMsg);
-  const errorMsg = useSelector(state => state.authUser.errorMsg);
+  const CurrentPin = useSelector(state => state.profileUser.CurrentPin);
+  const successMsg = useSelector(state => state.profileUser.successMsg);
+  const errorMsg = useSelector(state => state.profileUser.errorMsg);
   const [modalVisible, setModalVisible] = useState(false);
   const onModal = () => {
     navigation.navigate('profile');
@@ -52,7 +52,9 @@ const NewPin = ({navigation}) => {
         }}>
         <View style={styleLocal.centeredView}>
           <View style={styleLocal.modalView}>
-            <Text>{successMsg ? successMsg : errorMsg}</Text>
+            <Text>
+              {successMsg === 'Change Pin successfully' ? successMsg : errorMsg}
+            </Text>
             <TouchableOpacity style={styleLocal.btnModal} onPress={onModal}>
               <Text style={[styles.fZ16, styles.fW700, styles.cWhite]}>
                 Continue

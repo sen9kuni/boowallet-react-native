@@ -7,9 +7,10 @@ import {
   Dimensions,
   FlatList,
   TouchableOpacity,
+  Modal,
 } from 'react-native';
 import React from 'react';
-import {BACK_PRIMARY, SECONDARY_COLOR} from '../styles/constant';
+import {BACK_PRIMARY, PRIMARY_COLOR, SECONDARY_COLOR} from '../styles/constant';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from '../styles/global';
 import CardUsers from '../components/CardUsers';
@@ -21,25 +22,27 @@ import {
   getProfileById,
   nextUsers,
   searchUsers,
-} from '../redux/action/authUser';
+} from '../redux/action/transaction';
 import {
   resetPage,
   resetSearchkey,
   setSearchkey,
-} from '../redux/reducers/authUser';
+} from '../redux/reducers/transactionUser';
 
 const SearchReciver = ({navigation}) => {
   const dispatch = useDispatch();
   const token = useSelector(state => state.authUser.token);
   const loginId = useSelector(state => state.authUser.id);
-  const allUsers = useSelector(state => state.authUser.dataUsers);
-  const onPage = useSelector(state => state.authUser.nowPage);
-  const searchKey = useSelector(state => state.authUser.searchKey);
+  const allUsers = useSelector(state => state.transactionUser.dataUsers);
+  const onPage = useSelector(state => state.transactionUser.nowPage);
+  const [search, setSearch] = React.useState('');
   React.useEffect(() => {
-    dispatch(resetSearchkey());
-    const param = {page: 1, token: token, search: ''};
-    dispatch(getAllUsers(param));
-  }, []);
+    if (search) {
+      dispatch(getAllUsers({page: 1, token: token, search: search}));
+    } else {
+      dispatch(getAllUsers({page: 1, token: token, search: ''}));
+    }
+  }, [dispatch, search, token]);
   const onRefresh = async () => {
     dispatch(resetSearchkey());
     await dispatch(resetPage());
@@ -48,7 +51,7 @@ const SearchReciver = ({navigation}) => {
   };
   const nextPage = async () => {
     const dumy = onPage + 1;
-    const param = {page: dumy, token: token, search: searchKey};
+    const param = {page: dumy, token: token, search: search};
     await dispatch(nextUsers(param));
   };
   const onChoseProfile = user_id => {
@@ -56,57 +59,28 @@ const SearchReciver = ({navigation}) => {
     dispatch(getProfileById(param));
     navigation.navigate('amount input');
   };
-  const onSearch = async value => {
-    dispatch(setSearchkey(value.search));
-    const param = {page: 1, token: token, search: searchKey};
-    dispatch(searchUsers(param));
+  const onSearch = value => {
+    console.log(value);
+    setSearch(value);
+    console.log(search);
   };
   return (
-    // <View style={styleLocal.wrapper}>
-    //   <View style={styleLocal.wraperSearch}>
-    //     <View style={styleLocal.searcher}>
-    //       <View>
-    //         <Icon name="search" size={30} color={SECONDARY_COLOR} />
-    //       </View>
-    //       <View style={styleLocal.inputSearch}>
-    //         <TextInput placeholder="Search receiver here" />
-    //       </View>
-    //     </View>
-    //   </View>
-    //   {/* <View style={styleLocal.infoSub}>
-    //     <Text style={[styles.fZ18, styles.fW700, styles.cCBlack]}>
-    //       Quick Access
-    //     </Text>
-    //   </View>
-    //   <View style={styleLocal.wrapScrollHorisontal}>
-    //     <ScrollView horizontal={true}>
-    //       <CardUsers />
-    //       <CardUsers />
-    //       <CardUsers />
-    //       <CardUsers />
-    //       <CardUsers />
-    //     </ScrollView>
-    //   </View> */}
-    //   <View style={styleLocal.infoSub2}>
-    //     <Text style={[styles.fZ18, styles.fW700, styles.cCBlack]}>
-    //       All Contacts
-    //     </Text>
-    //     <Text>17 Contact Founds</Text>
-    //   </View>
-    //   <View style={styleLocal.wrapScrollVer}>
-    //     <ScrollView>
-    //       <CardUsersLong />
-    //       <CardUsersLong />
-    //       <CardUsersLong />
-    //       <CardUsersLong />
-    //       <CardUsersLong />
-    //       <CardUsersLong />
-    //       <CardUsersLong />
-    //       <CardUsersLong />
-    //     </ScrollView>
-    //   </View>
-    // </View>
     <View style={styleLocal.wrapper}>
+      <View style={styleLocal.wraperSearch}>
+        <View style={styleLocal.searcher}>
+          <View>
+            <Icon name="search" size={30} color={SECONDARY_COLOR} />
+          </View>
+          <View style={styleLocal.inputSearch}>
+            <TextInput
+              placeholder="Search receiver here"
+              onChangeText={onSearch}
+              keyboardType="email-address"
+              value={search}
+            />
+          </View>
+        </View>
+      </View>
       {/* <Formik initialValues={{search: ''}} onSubmit={onSearch}>
         {({errors, handleChange, handleSubmit, values, isValid}) => (
           <View>
@@ -137,36 +111,51 @@ const SearchReciver = ({navigation}) => {
           data={allUsers}
           onEndReached={nextPage ? nextPage : null}
           onEndReachedThreshold={0.5}
-          ListHeaderComponent={() => {
-            return (
-              <Formik initialValues={{search: ''}} onSubmit={onSearch}>
-                {({errors, handleChange, handleSubmit, values, isValid}) => (
-                  <View>
-                    <View style={styleLocal.wraperSearch}>
-                      <View style={styleLocal.searcher}>
-                        <View>
-                          <Icon
-                            name="search"
-                            size={30}
-                            color={SECONDARY_COLOR}
-                          />
-                        </View>
-                        <View style={styleLocal.inputSearch}>
-                          <TextInput
-                            name="search"
-                            placeholder="Search receiver here"
-                            onSubmitEditing={handleSubmit}
-                            onChangeText={handleChange('search')}
-                            value={values.search}
-                          />
-                        </View>
-                      </View>
-                    </View>
-                  </View>
-                )}
-              </Formik>
-            );
-          }}
+          // ListHeaderComponent={() => {
+          //   return (
+          //     // <Formik initialValues={{search: ''}} onSubmit={onSearch}>
+          //     //   {({errors, handleChange, handleSubmit, values, isValid}) => (
+          //     //     <View>
+          //     //       <View style={styleLocal.wraperSearch}>
+          //     //         <View style={styleLocal.searcher}>
+          //     //           <View>
+          //     //             <Icon
+          //     //               name="search"
+          //     //               size={30}
+          //     //               color={SECONDARY_COLOR}
+          //     //             />
+          //     //           </View>
+          //     //           <View style={styleLocal.inputSearch}>
+          //     //             <TextInput
+          //     //               name="search"
+          //     //               placeholder="Search receiver here"
+          //     //               onSubmitEditing={handleSubmit}
+          //     //               onChangeText={handleChange('search')}
+          //     //               value={values.search}
+          //     //             />
+          //     //           </View>
+          //     //         </View>
+          //     //       </View>
+          //     //     </View>
+          //     //   )}
+          //     // </Formik>
+          //     <View style={styleLocal.wraperSearch}>
+          //       <View style={styleLocal.searcher}>
+          //         <View>
+          //           <Icon name="search" size={30} color={SECONDARY_COLOR} />
+          //         </View>
+          //         <View style={styleLocal.inputSearch}>
+          //           <TextInput
+          //             placeholder="Search receiver here"
+          //             onChangeText={setSearch}
+          //             keyboardType="email-address"
+          //             value={search}
+          //           />
+          //         </View>
+          //       </View>
+          //     </View>
+          //   );
+          // }}
           ItemSeparatorComponent={() => <View style={styleLocal.sparator} />}
           keyExtractor={(item, index) =>
             item.user_id + index + item.phonenumber
@@ -220,7 +209,7 @@ const styleLocal = StyleSheet.create({
     height: 400,
   },
   wraperSearch: {
-    // paddingHorizontal: 16,
+    paddingHorizontal: 16,
     marginVertical: 15,
   },
   searcher: {

@@ -25,7 +25,9 @@ export const numberFormat = value =>
   }).format(value);
 
 const TransactionsDetail = ({navigation}) => {
-  const dataHistoryHome = useSelector(state => state.authUser.dataHistoryHome);
+  const dataHistoryHome = useSelector(
+    state => state.historyUser.dataHistoryHome,
+  );
   const loginId = useSelector(state => state.authUser.id);
   return (
     // <ScrollView style={styleLocal.wrapperMain}>

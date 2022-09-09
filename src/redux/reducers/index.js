@@ -5,6 +5,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import authUser from './authUser';
 import costomPage from './costomPage';
 import notification from './notification';
+import historyUser from './historyUser';
+import profileUser from './profileUser';
+import transactionUser from './transactionUser';
 
 const authConfig = {
   storage: AsyncStorage,
@@ -12,13 +15,16 @@ const authConfig = {
 };
 
 const notifConfig = {
-  storage: notification,
-  key: 'notifications',
+  storage: AsyncStorage,
+  key: 'notifi',
 };
 
 const reducer = combineReducers({
   authUser: persistReducer(authConfig, authUser),
   notification: persistReducer(notifConfig, notification),
+  historyUser,
+  profileUser,
+  transactionUser,
   costomPage,
 });
 

@@ -22,9 +22,11 @@ export const numberFormat = value =>
   }).format(value);
 
 const TransactionSuccess = ({navigation}) => {
-  const dataTrans = useSelector(state => state.authUser.dataTrans);
-  const dataProfilelogin = useSelector(state => state.authUser.dataprofile);
-  const dataProfile = useSelector(state => state.authUser.dataChoseprofile);
+  const dataTrans = useSelector(state => state.transactionUser.dataTrans);
+  const dataProfilelogin = useSelector(state => state.profileUser.dataprofile);
+  const dataProfile = useSelector(
+    state => state.transactionUser.dataChoseprofile,
+  );
   const options = {
     weekday: 'long',
     year: 'numeric',
@@ -72,7 +74,11 @@ const TransactionSuccess = ({navigation}) => {
         />
       </View>
       <View style={[styleLocal.marginTButton]}>
-        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.popToTop();
+            navigation.navigate('Home');
+          }}>
           <View style={styleLocal.button}>
             <Text style={[styles.cWhite, styles.fZ18, styles.fW700]}>
               Back to Home

@@ -21,9 +21,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from '../styles/global';
 import Cardtransctions from '../components/Cardtransctions';
 import {useDispatch, useSelector} from 'react-redux';
-import {getHistory, nextGetHistory} from '../redux/action/authUser';
+import {getHistory, nextGetHistory} from '../redux/action/history';
 import CardTransactionExpense from '../components/CardTransactionExpense';
-import {resetNextPageHistory} from '../redux/reducers/authUser';
+import {resetNextPageHistory} from '../redux/reducers/historyUser';
 
 export const numberFormat = value =>
   new Intl.NumberFormat('id-ID', {
@@ -35,22 +35,32 @@ const TransactionsHistory = () => {
   const dispatch = useDispatch();
   const loginId = useSelector(state => state.authUser.id);
   const token = useSelector(state => state.authUser.token);
-  const dataHistory = useSelector(state => state.authUser.dataHistory);
-  const nextPageHistory = useSelector(state => state.authUser.nextPageHistory);
+  const dataHistory = useSelector(state => state.historyUser.dataHistory);
+  const nextPageHistory = useSelector(
+    state => state.historyUser.nextPageHistory,
+  );
   const [btnUp, setBtnUp] = React.useState(true);
   const [btnDown, setBtnDown] = React.useState(true);
+  const [sort, setSort] = React.useState('');
   React.useEffect(() => {
-    const param = {page: 1, token: token};
-    dispatch(getHistory(param));
-  }, []);
+    if (sort === 'ASC' || sort === 'DESC') {
+      dispatch(getHistory({page: 1, token: token, sort_by: sort}));
+    } else {
+      dispatch(getHistory({page: 1, token: token, sort_by: ''}));
+    }
+    // const param = {page: 1, token: token};
+    // dispatch(getHistory(param));
+  }, [dispatch, sort, token]);
   const onRefresh = async () => {
+    setBtnDown(true);
+    setBtnUp(true);
     dispatch(resetNextPageHistory());
-    const param = {page: 1, token: token};
+    const param = {page: 1, token: token, sort_by: ''};
     dispatch(getHistory(param));
   };
   const nextPage = async () => {
     if (nextPageHistory !== null && nextPageHistory !== undefined) {
-      const param = {page: nextPageHistory, token: token};
+      const param = {page: nextPageHistory, token: token, sort_by: sort};
       await dispatch(nextGetHistory(param));
     }
   };
@@ -58,16 +68,32 @@ const TransactionsHistory = () => {
     if (btnUp === false) {
       setBtnUp(true);
       setBtnDown(!btnDown);
+      if (btnDown === true) {
+        setSort('ASC');
+      } else {
+        setSort('DESC');
+      }
     } else {
       setBtnDown(!btnDown);
+      if (btnDown === true) {
+        setSort('ASC');
+      } else {
+        setSort('DESC');
+      }
     }
   };
-  const onUp = () => {
+  const onUp = async () => {
     if (btnDown === false) {
       setBtnDown(true);
-      setBtnUp(!btnUp);
+      await setBtnUp(!btnUp);
+      if (btnUp === true) {
+        setSort('DESC');
+      }
     } else {
-      setBtnUp(!btnUp);
+      await setBtnUp(!btnUp);
+      if (btnUp === true) {
+        setSort('DESC');
+      }
     }
   };
   return (
@@ -107,23 +133,30 @@ const TransactionsHistory = () => {
           return (
             <>
               {item.receiverid !== parseInt(loginId, 10) ? (
-                <View style={styleLocal.paddH}>
-                  <CardTransactionExpense
-                    fullname={`${item.receiverfirstname} ${item.receiverlastname}`}
-                    typeTrans={item.type}
-                    imageSrc={item.imgreceiver}
-                    amount={numberFormat(parseInt(item.amount, 10))}
-                  />
-                </View>
+                <CardTransactionExpense
+                  fullname={`${item.receiverfirstname} ${item.receiverlastname}`}
+                  typeTrans={item.type}
+                  imageSrc={item.imgreceiver}
+                  amount={numberFormat(parseInt(item.amount, 10))}
+                />
               ) : (
-                <View style={styleLocal.paddH}>
-                  <Cardtransctions
-                    fullname={`${item.receiverfirstname} ${item.receiverlastname}`}
-                    typeTrans={item.type}
-                    imageSrc={item.imgreceiver}
-                    amount={numberFormat(parseInt(item.amount, 10))}
-                  />
-                </View>
+                <>
+                  {item.type === 'transfer' ? (
+                    <Cardtransctions
+                      fullname={`${item.senderfirstname} ${item.senderlastname}`}
+                      typeTrans={item.type}
+                      imageSrc={item.imgsender}
+                      amount={numberFormat(parseInt(item.amount, 10))}
+                    />
+                  ) : (
+                    <Cardtransctions
+                      fullname={`${item.receiverfirstname} ${item.receiverlastname}`}
+                      typeTrans={item.type}
+                      imageSrc={item.imgreceiver}
+                      amount={numberFormat(parseInt(item.amount, 10))}
+                    />
+                  )}
+                </>
               )}
             </>
           );

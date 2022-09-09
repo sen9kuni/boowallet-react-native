@@ -19,17 +19,17 @@ import {
 import styles from '../styles/global';
 import CardProfileInfo from '../components/CardProfileInfo';
 import {Formik} from 'formik';
-import {editProfileName} from '../redux/action/authUser';
+import {editProfileName} from '../redux/action/profile';
 
 const PersonalInformation = ({navigation}) => {
   const dispatch = useDispatch();
   const token = useSelector(state => state.authUser.token);
-  const successMsg = useSelector(state => state.authUser.successMsg);
-  const errorMsg = useSelector(state => state.authUser.errorMsg);
+  const successMsg = useSelector(state => state.profileUser.successMsg);
+  const errorMsg = useSelector(state => state.profileUser.errorMsg);
   const [modalVisibleInfo, setModalVisibleInfo] = useState(false);
   const [modalVisibleFirst, setModalVisibleFirst] = useState(false);
   const [modalVisibleLast, setModalVisibleLast] = useState(false);
-  const dataprofile = useSelector(state => state.authUser.dataprofile);
+  const dataprofile = useSelector(state => state.profileUser.dataprofile);
   const onChangeFirst = value => {
     const param = {token: token, first_name: value.first_name};
     dispatch(editProfileName(param));
@@ -61,7 +61,7 @@ const PersonalInformation = ({navigation}) => {
             <Text>
               {successMsg === 'Profile name updated'
                 ? successMsg
-                : 'Update Failed'}
+                : 'loading...'}
             </Text>
             <TouchableOpacity style={styleLocal.btnModal} onPress={onModalInfo}>
               <Text style={[styles.fZ16, styles.fW700, styles.cWhite]}>

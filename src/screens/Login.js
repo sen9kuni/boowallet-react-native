@@ -5,15 +5,18 @@ import {
   StyleSheet,
   TouchableOpacity,
   Alert,
+  Modal,
 } from 'react-native';
 import React from 'react';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 
 import styles from '../styles/global';
 import Input from '../components/Input';
 import {login} from '../redux/action/authUser';
+import {saveToken} from '../redux/action/notification';
+import {PRIMARY_COLOR} from '../styles/constant';
 
 const loginSechema = Yup.object().shape({
   email: Yup.string().email('Invalid email address format').required(),
@@ -22,14 +25,55 @@ const loginSechema = Yup.object().shape({
 
 const Login = ({navigation}) => {
   const dispatch = useDispatch();
-  const onLogin = value => {
-    // const params = {email: email, password: password};
+  const fcm_token = useSelector(state => state.notification.fcm_token);
+  // const successMsg = useSelector(state => state.authUser.successMsg);
+  const errorMsg = useSelector(state => state.authUser.errorMsg);
+  const [modalVisible, setModalVisible] = React.useState(false);
+  // console.log(fcm_token);
+  React.useEffect(() => {
+    const pram = {token: fcm_token};
+    dispatch(saveToken(pram));
+  }, [dispatch, fcm_token]);
+
+  const onLogin = async value => {
+    const params = {
+      email: value.email,
+      password: value.password,
+      tokenNotif: fcm_token,
+    };
     // console.log(value);
-    dispatch(login(value));
+    await dispatch(login(params));
+    if (
+      errorMsg === 'Email or Password not match' ||
+      errorMsg === 'User not found'
+    ) {
+      setModalVisible(true);
+    }
     // navigation.navigate('AuthHome');
   };
   return (
     <ScrollView style={styles.wrapperMain}>
+      <Modal
+        visible={modalVisible}
+        animationType="slide"
+        transparent
+        // onRequestClose={() => {
+        //   setModalVisible(!modalVisible);
+        // }}
+      >
+        <View style={styleLocal.centeredView}>
+          <View style={styleLocal.modalView}>
+            <Text>{errorMsg}</Text>
+            <TouchableOpacity
+              style={styleLocal.btnModal}
+              onPress={() => setModalVisible(false)}>
+              <Text style={[styles.fZ16, styles.fW700, styles.cWhite]}>
+                Continue
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
       <View style={styles.header}>
         <Text style={styles.textLogo}>Boo-Wallet</Text>
       </View>
@@ -165,6 +209,34 @@ const styleLocal = StyleSheet.create({
   },
   wrapLink: {
     padding: 0,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  btnModal: {
+    marginTop: 15,
+    backgroundColor: PRIMARY_COLOR,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
   },
 });
 

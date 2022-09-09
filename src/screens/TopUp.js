@@ -22,7 +22,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 // import CardTopup from '../components/CardTopup';
 import CardListTopup from '../components/CardListTopup';
 // import Input from '../components/Input';
-import {getProfile, topUp} from '../redux/action/authUser';
+import {topUp} from '../redux/action/transaction';
+import {getProfile} from '../redux/action/profile';
 
 const topupSechema = Yup.object().shape({
   amount: Yup.number()
@@ -36,7 +37,7 @@ const TopUp = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalInfoVisible, setModalInfoVisible] = useState(false);
   const token = useSelector(state => state.authUser.token);
-  const successMsg = useSelector(state => state.authUser.successMsg);
+  const successMsg = useSelector(state => state.transactionUser.successMsg);
   const errorMsg = useSelector(state => state.authUser.errorMsg);
   const onTopup = value => {
     const param = {token: token, amount: value.amount};
@@ -44,6 +45,10 @@ const TopUp = () => {
     dispatch(getProfile(token));
     setModalInfoVisible(true);
     // navigation.navigate('Home');
+  };
+  const onModalMsg = () => {
+    setModalInfoVisible(false);
+    setModalVisible(false);
   };
   return (
     <ScrollView style={styleLocal.wrapper}>
@@ -58,9 +63,7 @@ const TopUp = () => {
         <View style={styleLocal.centeredView}>
           <View style={styleLocal.modalView}>
             <Text style={[styles.tCenter]}>{successMsg}</Text>
-            <TouchableOpacity
-              style={styleLocal.btnModal}
-              onPress={() => setModalInfoVisible(false)}>
+            <TouchableOpacity style={styleLocal.btnModal} onPress={onModalMsg}>
               <Text style={[styles.fZ16, styles.fW700, styles.cWhite]}>
                 Continue
               </Text>
