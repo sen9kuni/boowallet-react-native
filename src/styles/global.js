@@ -71,6 +71,12 @@ const style = StyleSheet.create({
   fZ14: {
     fontSize: 14,
   },
+  fZ10: {
+    fontSize: 10,
+  },
+  fZ5: {
+    fontSize: 6,
+  },
   fZ16: {
     fontSize: 16,
   },
@@ -175,6 +181,9 @@ const style = StyleSheet.create({
   },
   w100: {
     width: 200,
+  },
+  mainPadH: {
+    paddingHorizontal: 16,
   },
 });
 

@@ -32,7 +32,6 @@ const styleLocal = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     padding: 20,
-    marginBottom: 15,
   },
   wraperText: {
     flexDirection: 'column',

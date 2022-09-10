@@ -24,6 +24,8 @@ import CardTransactionExpense from '../components/CardTransactionExpense';
 import {useDispatch, useSelector} from 'react-redux';
 import {getHistoryHome} from '../redux/action/history';
 import {getProfile} from '../redux/action/profile';
+import {countNotif} from '../redux/action/notification';
+import {useIsFocused} from '@react-navigation/native';
 
 export const numberFormat = value =>
   new Intl.NumberFormat('id-ID', {
@@ -32,9 +34,11 @@ export const numberFormat = value =>
   }).format(value);
 
 const Home = ({navigation}) => {
+  const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const token = useSelector(state => state.authUser.token);
   const loginId = useSelector(state => state.authUser.id);
+  const countNotifVal = useSelector(state => state.notifUser.countHomeNotif);
   const dataHistoryHome = useSelector(
     state => state.historyUser.dataHistoryHome,
   );
@@ -47,14 +51,21 @@ const Home = ({navigation}) => {
   React.useEffect(() => {
     const param = {token: token, page: 1};
     dispatch(getProfile(token));
+    dispatch(countNotif({token: token}));
     dispatch(getHistoryHome(param));
     if (pin === null) {
       navigation.navigate('Create Pin');
     }
-  }, [dispatch, navigation, pin, token]);
+    let val = null;
+    val = countNotifVal;
+    if (parseInt(val, 10) > 0) {
+      setNotif(true);
+    } else {
+      setNotif(false);
+    }
+  }, [isFocused, countNotifVal, dispatch, navigation, pin, token]);
 
   const dataImage = dataprofile?.picture;
-  console.log(dataHistoryHome);
   return (
     <>
       {/* header */}
@@ -77,7 +88,13 @@ const Home = ({navigation}) => {
             <TouchableOpacity
               onPress={() => navigation.navigate('Notifications')}>
               <Icon name="bell-o" size={28} color={WHITE_COLOR} />
-              {notif && <View style={styleLocal.bubleNotif} />}
+              {notif && (
+                <View style={styleLocal.bubleNotif}>
+                  <Text style={[styles.cWhite, styles.tCenter, styles.fZ5]}>
+                    {countNotifVal > 10 ? '10+' : countNotifVal}
+                  </Text>
+                </View>
+              )}
             </TouchableOpacity>
           </View>
         </View>
@@ -238,6 +255,8 @@ const styleLocal = StyleSheet.create({
     backgroundColor: RED,
     borderRadius: 20,
     right: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

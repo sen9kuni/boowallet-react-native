@@ -29,7 +29,8 @@ const PinSuccess = ({navigation}) => {
           </Text>
           <Text style={[styles.fZ16, styles.textCenter, styles.fW400]}>
             Your PIN was successfully created and you can now access all the
-            features in Zwallet. Login to your new account and start exploring!
+            features in Boo-Wallet. Login to your new account and start
+            exploring!
           </Text>
         </View>
         <View style={[styles.buttonWrapper, styleLocal.marginButton]}>

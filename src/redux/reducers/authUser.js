@@ -14,6 +14,7 @@ import {
   // nextGetHistory,
   // nextUsers,
   register,
+  resetPassword,
   // searchUsers,
   // topUp,
   // transfer,
@@ -30,6 +31,7 @@ const initialState = {
   id: null,
   pin: null,
   result: {},
+  tempEmail: null,
   // dataprofile: [],
   // CurrentPin: null,
   // dataUsers: [],
@@ -49,33 +51,12 @@ const authUser = createSlice({
     logout: () => {
       return initialState;
     },
-    // setCurrentPin: (state, action) => {
-    //   state.CurrentPin = action.payload;
-    // },
-    // resetCurrentPin: state => {
-    //   state.CurrentPin = null;
-    // },
-    // resetPage: state => {
-    //   state.nowPage = null;
-    // },
-    // resetDataUsers: state => {
-    //   state.dataUsers = [];
-    // },
-    // setDataTrans: (state, action) => {
-    //   state.dataTrans = action.payload;
-    // },
-    // resetDataTrans: state => {
-    //   state.dataTrans = {};
-    // },
-    // setSearchkey: (state, action) => {
-    //   state.searchKey = action.payload;
-    // },
-    // resetSearchkey: state => {
-    //   state.searchKey = null;
-    // },
-    // resetNextPageHistory: state => {
-    //   state.nextPageHistory = null;
-    // },
+    setTempEmail: (state, action) => {
+      state.tempEmail = action.payload;
+    },
+    resetTempEmail: state => {
+      state.tempEmail = null;
+    },
   },
   extraReducers: build => {
     build.addCase(login.pending, state => {
@@ -103,6 +84,15 @@ const authUser = createSlice({
     });
     build.addCase(register.fulfilled, (state, action) => {
       state.successMsg = action.payload.successMsg;
+      state.errorMsg = action.payload.errorMsg;
+    });
+
+    build.addCase(resetPassword.pending, state => {
+      state.errorMsg = null;
+      state.successMsg = null;
+    });
+    build.addCase(resetPassword.fulfilled, (state, action) => {
+      state.successMsg = action.payload.message;
       state.errorMsg = action.payload.errorMsg;
     });
 
@@ -306,6 +296,8 @@ const authUser = createSlice({
 
 export const {
   logout,
+  setTempEmail,
+  resetTempEmail,
   // setCurrentPin,
   // resetCurrentPin,
   // resetPage,
@@ -320,6 +312,7 @@ export {
   login,
   register,
   createPin,
+  resetPassword,
   // getProfile,
   // editPhone,
   // changePassword,

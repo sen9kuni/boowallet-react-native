@@ -79,7 +79,11 @@ const TransactionFailed = ({navigation}) => {
         />
       </View>
       <View style={[styleLocal.marginTButton]}>
-        <TouchableOpacity onPress={() => navigation.navigate('search')}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.popToTop();
+            navigation.navigate('search');
+          }}>
           <View style={styleLocal.button}>
             <Text style={[styles.cWhite, styles.fZ18, styles.fW700]}>
               Try Again

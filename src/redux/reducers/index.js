@@ -8,6 +8,7 @@ import notification from './notification';
 import historyUser from './historyUser';
 import profileUser from './profileUser';
 import transactionUser from './transactionUser';
+import notifUser from './notifUser';
 
 const authConfig = {
   storage: AsyncStorage,
@@ -26,6 +27,7 @@ const reducer = combineReducers({
   profileUser,
   transactionUser,
   costomPage,
+  notifUser,
 });
 
 export default reducer;

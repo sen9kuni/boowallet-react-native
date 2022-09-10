@@ -72,7 +72,7 @@ const Signup = ({navigation}) => {
             Sign Up
           </Text>
           <Text style={[styles.fZ16, styles.textCenter, styles.fW400]}>
-            Create your account to access FazzPay.
+            Create your account to access Boo-Wallet.
           </Text>
         </View>
         <Formik

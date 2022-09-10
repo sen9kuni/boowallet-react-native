@@ -40,6 +40,7 @@ const Profile = ({navigation}) => {
   const fcm_token = useSelector(state => state.notification.fcm_token);
   const successMsg = useSelector(state => state.profileUser.successMsg);
   const errorMsg = useSelector(state => state.profileUser.errorMsg);
+  const [modalVisibleInfo, setModalVisibleInfo] = React.useState(false);
   const dataprofile = useSelector(state => state.profileUser.dataprofile);
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
@@ -68,7 +69,7 @@ const Profile = ({navigation}) => {
 
   const onDeleteImage = async () => {
     await dispatch(deleteImage({token: token}));
-    Alert.alert(successMsg);
+    setModalVisibleInfo(true);
   };
 
   const onUploadImage = async data => {
@@ -128,6 +129,9 @@ const Profile = ({navigation}) => {
   React.useEffect(() => {
     dispatch(getProfile(token));
   }, [dispatch, token]);
+  const onModal = () => {
+    setModalVisibleInfo(false);
+  };
   return (
     <ScrollView
       style={styleLocal.wrapper}
@@ -179,6 +183,29 @@ const Profile = ({navigation}) => {
               onPress={() => setModalVisible(false)}>
               <Text style={[styles.fZ16, styles.fW700, styles.cWhite]}>
                 Cancel
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+      <Modal
+        visible={modalVisibleInfo}
+        animationType="slide"
+        transparent
+        onRequestClose={() => {
+          // Alert.alert('Modal has been closed.');
+          setModalVisibleInfo(!modalVisibleInfo);
+        }}>
+        <View style={styleLocal.centeredView}>
+          <View style={styleLocal.modalView}>
+            <Text>
+              {successMsg === 'your picture is deleted'
+                ? successMsg
+                : 'your picture already deleted'}
+            </Text>
+            <TouchableOpacity style={styleLocal.btnModal} onPress={onModal}>
+              <Text style={[styles.fZ16, styles.fW700, styles.cWhite]}>
+                Continue
               </Text>
             </TouchableOpacity>
           </View>

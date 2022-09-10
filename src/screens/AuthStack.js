@@ -21,21 +21,6 @@ const StackAuth = createNativeStackNavigator();
 const AuthStack = () => {
   const dispatch = useDispatch();
   const tokenLogin = useSelector(state => state.authUser.token);
-  const fcm_token = useSelector(state => state.notification.fcm_token);
-  PushNotification.configure({
-    onRegister: function (token) {
-      // console.log('TOKEN:', token);
-      // if (fcm_token === null) {
-      dispatch(setToken(token.token));
-      // }
-    },
-    onNotification: function (notification) {
-      console.log('NOTIFICATION:', notification);
-      notification.finish(() => {
-        console.log('finish');
-      });
-    },
-  });
   return (
     <NavigationContainer onReady={() => RNBootSplash.hide()}>
       <StackAuth.Navigator>

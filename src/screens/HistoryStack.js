@@ -3,6 +3,7 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import TransactionsDetail from './TransactionsDetail';
 import TransactionsHistory from './TransactionsHistory';
+import DetailHistoryTransaction from './DetailHistoryTransaction';
 
 const StackHistory = createNativeStackNavigator();
 
@@ -18,6 +19,11 @@ const HistoryStack = () => {
         options={{headerShown: false}}
         name="Transaction History"
         component={TransactionsHistory}
+      />
+      <StackHistory.Screen
+        options={{headerShown: false}}
+        name="Detai Transaction History"
+        component={DetailHistoryTransaction}
       />
     </StackHistory.Navigator>
   );

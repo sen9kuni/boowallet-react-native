@@ -35,7 +35,7 @@ const ChangePassword = ({navigation}) => {
   const errorMsg = useSelector(state => state.profileUser.errorMsg);
   const [modalVisible, setModalVisible] = useState(false);
   const onChange = value => {
-    console.log(value);
+    // console.log(value);
     if (value.newPassword === value.repeatNewPassword) {
       const param = {
         token: token,

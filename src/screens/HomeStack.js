@@ -5,6 +5,7 @@ import CreatePin from './CreatePin';
 import PinSuccess from './PinSuccess';
 import Notifi from './Notifications';
 import {useSelector} from 'react-redux';
+import DetailNotification from './DetailNotification';
 
 const StackHome = createNativeStackNavigator();
 
@@ -17,9 +18,14 @@ const HomeStack = () => {
         component={Home}
       />
       <StackHome.Screen
-        options={{headerShown: false}}
+        options={{headerShown: true}}
         name="Notifications"
         component={Notifi}
+      />
+      <StackHome.Screen
+        options={{headerShown: true}}
+        name="Notification Detail"
+        component={DetailNotification}
       />
       <StackHome.Screen
         options={{headerShown: false}}

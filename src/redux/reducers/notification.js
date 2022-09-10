@@ -11,9 +11,11 @@ const notification = createSlice({
     setToken: (state, action) => {
       state.fcm_token = action.payload;
     },
+    resetNextPageNotif: state => {
+      state.nextPageNotif = null;
+    },
   },
 });
 
 export const {setToken} = notification.actions;
-
 export default notification.reducer;

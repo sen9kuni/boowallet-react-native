@@ -16,7 +16,7 @@ import styles from '../styles/global';
 import Input from '../components/Input';
 import {login} from '../redux/action/authUser';
 import {saveToken} from '../redux/action/notification';
-import {PRIMARY_COLOR} from '../styles/constant';
+import {PRIMARY_COLOR, SECONDARY_BLACK} from '../styles/constant';
 
 const loginSechema = Yup.object().shape({
   email: Yup.string().email('Invalid email address format').required(),
@@ -83,7 +83,8 @@ const Login = ({navigation}) => {
             Login
           </Text>
           <Text style={[styles.fZ16, styles.textCenter, styles.fW400]}>
-            Login to your existing account to accessall the features in FazzPay.
+            Login to your existing account to accessall the features in
+            Boo-Wallet.
           </Text>
         </View>
         {/* <Formik initialValues={} */}
@@ -124,20 +125,22 @@ const Login = ({navigation}) => {
                     </Text>
                   )}
                 </View>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('input email')}>
-                  <Text
-                    style={[
-                      styleLocal.forgotPassword,
-                      styles.fW600,
-                      styles.fZ14,
-                    ]}>
-                    Forgot password?
-                  </Text>
-                </TouchableOpacity>
+                <View style={styleLocal.fbWrap}>
+                  <TouchableOpacity
+                    style={styleLocal.forgotPassword}
+                    onPress={() => navigation.navigate('input email')}>
+                    <Text style={[styles.fW600, styles.fZ14]}>
+                      Forgot password?
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={styleLocal.gap} />
                 <View style={[styles.buttonWrapper, styleLocal.marginButton]}>
                   <TouchableOpacity onPress={handleSubmit} disabled={!isValid}>
-                    <View style={styles.button}>
+                    <View
+                      style={
+                        !isValid ? styleLocal.buttonDisable : styleLocal.button
+                      }>
                       <Text style={[styles.cWhite, styles.fZ18, styles.fW700]}>
                         Login
                       </Text>
@@ -147,37 +150,6 @@ const Login = ({navigation}) => {
               </View>
             )}
           </Formik>
-          {/* <View style={styles.mB60}>
-            <Input
-              onChange={text => setEmail(text)}
-              palceHolder="Enter your e-mail"
-              icon="envelope"
-              type="email-address"
-            />
-          </View>
-          <View style={styles.mB15}>
-            <Input
-              onChange={text => setPassword(text)}
-              palceHolder="Enter your password"
-              icon="lock"
-              secure={true}
-            />
-          </View>
-          <TouchableOpacity onPress={() => navigation.navigate('input email')}>
-            <Text
-              style={[styleLocal.forgotPassword, styles.fW600, styles.fZ14]}>
-              Forgot password?
-            </Text>
-          </TouchableOpacity>
-          <View style={[styles.buttonWrapper, styleLocal.marginButton]}>
-            <TouchableOpacity onPress={onLogin}>
-              <View style={styles.button}>
-                <Text style={[styles.cWhite, styles.fZ18, styles.fW700]}>
-                  Login
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View> */}
           <Text
             style={[
               styles.fZ16,
@@ -201,7 +173,32 @@ const Login = ({navigation}) => {
 
 const styleLocal = StyleSheet.create({
   forgotPassword: {
-    textAlign: 'right',
+    width: 120,
+  },
+  fbWrap: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  button: {
+    backgroundColor: PRIMARY_COLOR,
+    // width: (Dimensions.get('screen').width * 50) / 100,
+    paddingVertical: 16,
+    paddingHorizontal: 148,
+    alignItems: 'center',
+    borderRadius: 12,
+    // elevation: 3,
+  },
+  buttonDisable: {
+    backgroundColor: SECONDARY_BLACK,
+    // width: (Dimensions.get('screen').width * 50) / 100,
+    paddingVertical: 16,
+    paddingHorizontal: 148,
+    alignItems: 'center',
+    borderRadius: 12,
+    // elevation: 3,
+  },
+  gap: {
     marginBottom: 75,
   },
   marginButton: {

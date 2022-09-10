@@ -90,7 +90,7 @@ const CreatePin = ({navigation}) => {
           </Text>
           <Text style={[styles.fZ16, styles.textCenter, styles.fW400]}>
             Create a PIN that's contain 6 digits number for security purpose in
-            FazzPay.
+            Boo-Wallet.
           </Text>
         </View>
         <View style={styles.content}>

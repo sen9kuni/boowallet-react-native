@@ -31,7 +31,7 @@ export const numberFormat = value =>
     currency: 'IDR',
   }).format(value);
 
-const TransactionsHistory = () => {
+const TransactionsHistory = ({navigation}) => {
   const dispatch = useDispatch();
   const loginId = useSelector(state => state.authUser.id);
   const token = useSelector(state => state.authUser.token);
@@ -41,7 +41,8 @@ const TransactionsHistory = () => {
   );
   const [btnUp, setBtnUp] = React.useState(true);
   const [btnDown, setBtnDown] = React.useState(true);
-  const [sort, setSort] = React.useState('');
+  // const [sort, setSort] = React.useState('');
+  const [sort, setSort] = React.useState('DESC');
   React.useEffect(() => {
     if (sort === 'ASC' || sort === 'DESC') {
       dispatch(getHistory({page: 1, token: token, sort_by: sort}));
@@ -64,36 +65,43 @@ const TransactionsHistory = () => {
       await dispatch(nextGetHistory(param));
     }
   };
-  const onDown = () => {
-    if (btnUp === false) {
-      setBtnUp(true);
-      setBtnDown(!btnDown);
-      if (btnDown === true) {
-        setSort('ASC');
-      } else {
-        setSort('DESC');
-      }
+  // const onDown = () => {
+  //   if (btnUp === false) {
+  //     setBtnUp(true);
+  //     setBtnDown(!btnDown);
+  //     if (btnDown === true) {
+  //       setSort('ASC');
+  //     } else {
+  //       setSort('DESC');
+  //     }
+  //   } else {
+  //     setBtnDown(!btnDown);
+  //     if (btnDown === true) {
+  //       setSort('ASC');
+  //     } else {
+  //       setSort('DESC');
+  //     }
+  //   }
+  // };
+  // const onUp = async () => {
+  //   if (btnDown === false) {
+  //     setBtnDown(true);
+  //     await setBtnUp(!btnUp);
+  //     if (btnUp === true) {
+  //       setSort('DESC');
+  //     }
+  //   } else {
+  //     await setBtnUp(!btnUp);
+  //     if (btnUp === true) {
+  //       setSort('DESC');
+  //     }
+  //   }
+  // };
+  const onShorting = () => {
+    if (sort === 'DESC') {
+      setSort('ASC');
     } else {
-      setBtnDown(!btnDown);
-      if (btnDown === true) {
-        setSort('ASC');
-      } else {
-        setSort('DESC');
-      }
-    }
-  };
-  const onUp = async () => {
-    if (btnDown === false) {
-      setBtnDown(true);
-      await setBtnUp(!btnUp);
-      if (btnUp === true) {
-        setSort('DESC');
-      }
-    } else {
-      await setBtnUp(!btnUp);
-      if (btnUp === true) {
-        setSort('DESC');
-      }
+      setSort('DESC');
     }
   };
   return (
@@ -133,28 +141,43 @@ const TransactionsHistory = () => {
           return (
             <>
               {item.receiverid !== parseInt(loginId, 10) ? (
-                <CardTransactionExpense
-                  fullname={`${item.receiverfirstname} ${item.receiverlastname}`}
-                  typeTrans={item.type}
-                  imageSrc={item.imgreceiver}
-                  amount={numberFormat(parseInt(item.amount, 10))}
-                />
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('Detai Transaction History', {item})
+                  }>
+                  <CardTransactionExpense
+                    fullname={`${item.receiverfirstname} ${item.receiverlastname}`}
+                    typeTrans={item.type}
+                    imageSrc={item.imgreceiver}
+                    amount={numberFormat(parseInt(item.amount, 10))}
+                  />
+                </TouchableOpacity>
               ) : (
                 <>
                   {item.type === 'transfer' ? (
-                    <Cardtransctions
-                      fullname={`${item.senderfirstname} ${item.senderlastname}`}
-                      typeTrans={item.type}
-                      imageSrc={item.imgsender}
-                      amount={numberFormat(parseInt(item.amount, 10))}
-                    />
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('Detai Transaction History', {item})
+                      }>
+                      <Cardtransctions
+                        fullname={`${item.senderfirstname} ${item.senderlastname}`}
+                        typeTrans={item.type}
+                        imageSrc={item.imgsender}
+                        amount={numberFormat(parseInt(item.amount, 10))}
+                      />
+                    </TouchableOpacity>
                   ) : (
-                    <Cardtransctions
-                      fullname={`${item.receiverfirstname} ${item.receiverlastname}`}
-                      typeTrans={item.type}
-                      imageSrc={item.imgreceiver}
-                      amount={numberFormat(parseInt(item.amount, 10))}
-                    />
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate('Detai Transaction History', {item})
+                      }>
+                      <Cardtransctions
+                        fullname={`${item.receiverfirstname} ${item.receiverlastname}`}
+                        typeTrans={item.type}
+                        imageSrc={item.imgreceiver}
+                        amount={numberFormat(parseInt(item.amount, 10))}
+                      />
+                    </TouchableOpacity>
                   )}
                 </>
               )}
@@ -162,7 +185,7 @@ const TransactionsHistory = () => {
           );
         }}
       />
-      <View style={styleLocal.wrapperButton}>
+      {/* <View style={styleLocal.wrapperButton}>
         <TouchableOpacity
           style={btnUp ? styleLocal.btnMini : styleLocal.btnMiniUp}
           onPress={() => onUp()}>
@@ -186,7 +209,13 @@ const TransactionsHistory = () => {
             Filter by Date
           </Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
+      <TouchableOpacity style={styleLocal.btnShoting} onPress={onShorting}>
+        <Text style={[styles.fZ18, styles.fW700, styles.cPrimary]}>
+          {/* SHORTING */}
+          {sort === 'DESC' ? 'SHORTING LATEST' : 'SHORTING OLDEST'}
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -197,6 +226,7 @@ const styleLocal = StyleSheet.create({
     backgroundColor: BACK_PRIMARY,
     justifyContent: 'space-between',
     flexDirection: 'column',
+    paddingHorizontal: 16,
   },
   wrapperScroll: {
     height: Dimensions.get('screen').height - 150,
@@ -238,6 +268,16 @@ const styleLocal = StyleSheet.create({
   },
   sparator: {
     height: 5,
+  },
+  btnShoting: {
+    width: '100%',
+    backgroundColor: WHITE_COLOR,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 15,
+    elevation: 1,
+    marginVertical: 15,
   },
 });
 

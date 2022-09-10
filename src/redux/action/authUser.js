@@ -19,7 +19,7 @@ export const register = createAsyncThunk('auth/register', async request => {
   const result = {};
   try {
     const send = qs.stringify(request);
-    console.log(send);
+    // console.log(send);
     const {data} = await https().post('auth/registerNew', send);
     result.successMsg = data.message;
     return result;
@@ -30,6 +30,21 @@ export const register = createAsyncThunk('auth/register', async request => {
     // console.log(e.response.data.results[0].msg);
   }
 });
+
+export const resetPassword = createAsyncThunk(
+  'auth/reset-password',
+  async request => {
+    const result = {};
+    try {
+      const send = qs.stringify(request);
+      const {data} = await https().post('auth/resetPassword', send);
+      return data;
+    } catch (e) {
+      result.errorMsg = e.response.data.message;
+      return result;
+    }
+  },
+);
 
 export const createPin = createAsyncThunk('auth/createPin', async request => {
   const result = {};
