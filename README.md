@@ -1,13 +1,13 @@
 # React_Native - Boo-wallet E-Wallet
 
 <p align="center">
-  <img src="./screenshoot/login.jpg" height="250" />
-  <img src="./screenshoot/home.jpg" height="250" /> 
-  <img src="./screenshoot/login.jpg" height="250" />
-  <img src="./screenshoot/search-user.jpg" height="250" /> 
-  <img src="./screenshoot/input-amount.jpg" height="250" />
-  <img src="./screenshoot/transfer-confirmation.jpg" height="250" /> 
-  <img src="./screenshoot/profile.jpg" height="250" /> 
+  <img src="./screenshoot/login.jpg" height="230" />
+  <img src="./screenshoot/home.jpg" height="230" /> 
+  <img src="./screenshoot/login.jpg" height="230" />
+  <img src="./screenshoot/search-user.jpg" height="230" /> 
+  <img src="./screenshoot/input-amount.jpg" height="230" />
+  <img src="./screenshoot/transfer-confirmation.jpg" height="230" /> 
+  <img src="./screenshoot/profile.jpg" height="230" /> 
 </p>
 
 ## About
