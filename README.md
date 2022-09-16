@@ -1,4 +1,4 @@
-# React_Native - Boo-wallet E-Wallet
+# React Native - Boo-wallet E-Wallet
 
 <p align="center">
   <img src="./screenshoot/login.jpg" height="230" />
