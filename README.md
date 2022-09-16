@@ -21,7 +21,7 @@ this Mobile application made using React Native
 - Edit profile
 
 ## Built With
-- [React Native](hhttps://reactnative.dev/)
+- [React Native](https://reactnative.dev/)
 
 ## Requirements
 1. Node_modules, type in terminal `npm install or yarn install`
