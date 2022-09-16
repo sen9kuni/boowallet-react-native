@@ -10,7 +10,10 @@
   <img src="./screenshoot/profile.jpg" height="230" /> 
 </p>
 
-## About
+## About 
+Mobile application for transfer money or payment
+this web application made using React Native
+## Feature
 - Login
 - Register
 - Transaction
